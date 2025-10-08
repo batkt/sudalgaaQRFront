@@ -171,7 +171,7 @@ export default function SetgegdelDetail() {
     <div className="min-h-screen bg-[url('/assets/bg-from-unsplash.jpg')] bg-cover bg-center bg-no-repeat bg-fixed">
       <Head>
         <title>Сэтгэгдлийн дэлгэрэнгүй</title>
-        <link rel="icon" href="/assets/logo.png" />
+        <link rel="icon" href="/assets/logo.webp" />
       </Head>
 
       <div className="min-h-screen bg-black/20 backdrop-blur-sm">
@@ -194,7 +194,7 @@ export default function SetgegdelDetail() {
                       <div className="flex items-center justify-center w-12 h-12 overflow-hidden">
                         <img
                           className="w-full h-full object-cover scale-[1.5]"
-                          src="/assets/logo.png"
+                          src="/assets/logo.webp"
                           alt="Logo"
                         />
                       </div>
@@ -329,23 +329,26 @@ export default function SetgegdelDetail() {
                           Анкетын хариултууд
                         </h3>
                         {record.asuultiinNer && (
-                          <div className="mb-4 p-3 bg-blue-50 rounded-lg">
+                          <div className="p-3 mb-4 rounded-lg bg-blue-50">
                             <p className="text-sm font-medium text-blue-800">
                               {record.asuultiinNer}
                             </p>
                             {record.asuultiinTurul && (
-                              <p className="text-xs text-blue-600 mt-1">
+                              <p className="mt-1 text-xs text-blue-600">
                                 Төрөл: {record.asuultiinTurul}
                               </p>
                             )}
                           </div>
                         )}
-                        <div className="mb-4 p-3 bg-gray-50 rounded-lg">
+                        <div className="p-3 mb-4 rounded-lg bg-gray-50">
                           <p className="text-sm font-medium text-gray-800">
                             Нийт үнэлгээ: {record.khariultuud.length} асуулт
                           </p>
                           <p className="text-xs text-gray-600">
-                            Хариултууд: {record.khariultuud.map(a => a.khariult).join(", ")}
+                            Хариултууд:{" "}
+                            {record.khariultuud
+                              .map((a) => a.khariult)
+                              .join(", ")}
                           </p>
                         </div>
                         <div className="space-y-4 overflow-y-auto max-h-96">

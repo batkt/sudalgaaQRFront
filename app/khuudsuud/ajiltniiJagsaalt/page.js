@@ -49,7 +49,18 @@ import BaganiinSongolt from "@/components/table/BaganiinSongolt";
 import moment from "moment";
 
 const order = { createdAt: -1 };
-const searchKeys = ["ovog", "ner", "tsol", "tasag", "register", "kheltes", "duureg", "albanTushaal", "utas","asuult"];
+const searchKeys = [
+  "ovog",
+  "ner",
+  "tsol",
+  "tasag",
+  "register",
+  "kheltes",
+  "duureg",
+  "albanTushaal",
+  "utas",
+  "asuult",
+];
 
 const UploadKharya = ({ zurgiinId, data, token, ajiltanGaralt }) => {
   const zuragRef = useRef(null);
@@ -83,8 +94,7 @@ const UploadKharya = ({ zurgiinId, data, token, ajiltanGaralt }) => {
                 filename: zurag,
                 path: "ajiltan",
               })
-              .then(({ data }) => {
-              });
+              .then(({ data }) => {});
             message.success("Амжилттай хадгалагдлаа!");
             emptyRef.current.classList.remove("hidden");
             buttonRef.current.classList.add("hidden");
@@ -95,7 +105,7 @@ const UploadKharya = ({ zurgiinId, data, token, ajiltanGaralt }) => {
   }
 
   return (
-    <div className="flex flex-col gap-2 justify-center items-center">
+    <div className="flex flex-col items-center justify-center gap-2">
       <Upload
         showUploadList={false}
         multiple={false}
@@ -115,8 +125,8 @@ const UploadKharya = ({ zurgiinId, data, token, ajiltanGaralt }) => {
           return beforeUpload(file, handleChange);
         }}
       >
-        <div className="flex flex-col gap-2 justify-center items-center">
-          <div className="flex overflow-hidden justify-center items-start w-24 h-24">
+        <div className="flex flex-col items-center justify-center gap-2">
+          <div className="flex items-start justify-center w-24 h-24 overflow-hidden">
             <img
               ref={ekhniiZuragRef}
               className=""
@@ -167,11 +177,11 @@ const EmployeeCard = ({
   return (
     <Card
       key={record._id}
-      className="border border-gray-200 shadow-sm transition-shadow hover:shadow-md"
+      className="transition-shadow border border-gray-200 shadow-sm hover:shadow-md"
       size="small"
     >
       <div className="space-y-3">
-        <div className="flex justify-between items-center pb-2 border-b">
+        <div className="flex items-center justify-between pb-2 border-b">
           <div className="flex items-center space-x-2">
             <Checkbox
               checked={selectedRowKeys.includes(record._id)}
@@ -231,12 +241,12 @@ const EmployeeCard = ({
         </div>
 
         <div className="space-y-1">
-          <div className="p-2 text-sm text-gray-900 bg-gray-50 rounded">
+          <div className="p-2 text-sm text-gray-900 rounded bg-gray-50">
             Регистр: {record.register}
           </div>
         </div>
 
-        <div className="flex flex-wrap gap-2 items-center">
+        <div className="flex flex-wrap items-center gap-2">
           {record.erkh && (
             <Tag
               color={
@@ -266,40 +276,40 @@ const EmployeeCard = ({
           )}
         </div>
 
-        <div className="flex justify-between items-center pt-2 border-t">
+        <div className="flex items-center justify-between pt-2 border-t">
           <div className="flex space-x-2">
             <Popover
               trigger="click"
               content={
-                <div className="flex gap-2 justify-between items-center">
-                  <div className="flex flex-col gap-2 justify-center items-center">
+                <div className="flex items-center justify-between gap-2">
+                  <div className="flex flex-col items-center justify-center gap-2">
                     <p className="text-xs">Хаалга</p>
                     <Button
                       onClick={showModal}
                       size="small"
-                      className="flex justify-center items-center"
+                      className="flex items-center justify-center"
                     >
                       <QrcodeOutlined />
                     </Button>
                   </div>
-                  <div className="mx-2 h-8 border-l border-dashed"></div>
-                  <div className="flex flex-col gap-2 justify-center items-center">
+                  <div className="h-8 mx-2 border-l border-dashed"></div>
+                  <div className="flex flex-col items-center justify-center gap-2">
                     <p className="text-xs">Ширээ</p>
                     <Button
                       onClick={showModal2}
                       size="small"
-                      className="flex justify-center items-center"
+                      className="flex items-center justify-center"
                     >
                       <QrcodeOutlined />
                     </Button>
                   </div>
-                  <div className="mx-2 h-8 border-l border-dashed"></div>
-                  <div className="flex flex-col gap-2 justify-center items-center">
+                  <div className="h-8 mx-2 border-l border-dashed"></div>
+                  <div className="flex flex-col items-center justify-center gap-2">
                     <p className="text-xs">Гадаа</p>
                     <Button
                       onClick={showModal3}
                       size="small"
-                      className="flex justify-center items-center"
+                      className="flex items-center justify-center"
                     >
                       <QrcodeOutlined />
                     </Button>
@@ -326,12 +336,12 @@ const EmployeeCard = ({
               placement="bottomRight"
               trigger="click"
               content={() => (
-                <div className="flex flex-col space-y-2 w-32">
+                <div className="flex flex-col w-32 space-y-2">
                   {nevtersenAjiltanErkh === "superAdmin" && (
                     <Button
                       type="text"
                       size="small"
-                      className="flex justify-start items-center"
+                      className="flex items-center justify-start"
                       onClick={() => erkhUgyu(negAjiltan, record._id)}
                     >
                       <UserAddOutlined className="mr-2" />
@@ -341,7 +351,7 @@ const EmployeeCard = ({
                   <Button
                     type="text"
                     size="small"
-                    className="flex justify-start items-center"
+                    className="flex items-center justify-start"
                     onClick={() => zasya(record._id)}
                   >
                     <EditOutlined className="mr-2" />
@@ -358,7 +368,7 @@ const EmployeeCard = ({
                       <Button
                         type="text"
                         size="small"
-                        className="flex justify-start items-center text-red-500"
+                        className="flex items-center justify-start text-red-500"
                       >
                         <DeleteOutlined className="mr-2" />
                         Устгах
@@ -436,12 +446,54 @@ export default function ajiltniiJagsaalt() {
   const filterOptions = useMemo(() => {
     const data = ajiltanGaralt?.data?.jagsaalt || [];
     return {
-      ner: [...new Set(data.map((item) => item.ner).filter(Boolean).map(name => name.trim()))].sort(),
-      albanTushaal: [...new Set(data.map((item) => item.albanTushaal).filter(Boolean).map(tushaal => tushaal.trim()))].sort(),
-      duureg: [...new Set(data.map((item) => item.duureg).filter(Boolean).map(duureg => duureg.trim()))].sort(),
-      tsol: [...new Set(data.map((item) => item.tsol).filter(Boolean).map(tsol => tsol.trim()))].sort(),
-      tasag: [...new Set(data.map((item) => item.tasag).filter(Boolean).map(tasag => tasag.trim()))].sort(),
-      kheltes: [...new Set(data.map((item) => item.kheltes).filter(Boolean).map(kheltes => kheltes.trim()))].sort(),
+      ner: [
+        ...new Set(
+          data
+            .map((item) => item.ner)
+            .filter(Boolean)
+            .map((name) => name.trim())
+        ),
+      ].sort(),
+      albanTushaal: [
+        ...new Set(
+          data
+            .map((item) => item.albanTushaal)
+            .filter(Boolean)
+            .map((tushaal) => tushaal.trim())
+        ),
+      ].sort(),
+      duureg: [
+        ...new Set(
+          data
+            .map((item) => item.duureg)
+            .filter(Boolean)
+            .map((duureg) => duureg.trim())
+        ),
+      ].sort(),
+      tsol: [
+        ...new Set(
+          data
+            .map((item) => item.tsol)
+            .filter(Boolean)
+            .map((tsol) => tsol.trim())
+        ),
+      ].sort(),
+      tasag: [
+        ...new Set(
+          data
+            .map((item) => item.tasag)
+            .filter(Boolean)
+            .map((tasag) => tasag.trim())
+        ),
+      ].sort(),
+      kheltes: [
+        ...new Set(
+          data
+            .map((item) => item.kheltes)
+            .filter(Boolean)
+            .map((kheltes) => kheltes.trim())
+        ),
+      ].sort(),
     };
   }, [ajiltanGaralt?.data?.jagsaalt]);
 
@@ -557,7 +609,7 @@ export default function ajiltniiJagsaalt() {
                   />
                 }
               >
-                <div className="inline-flex justify-center p-1 w-6 h-6 bg-gray-200 rounded-full shadow-xl">
+                <div className="inline-flex justify-center w-6 h-6 p-1 bg-gray-200 rounded-full shadow-xl">
                   {zuragcomp}
                 </div>
               </Popover>
@@ -618,32 +670,32 @@ export default function ajiltniiJagsaalt() {
             <Popover
               trigger="click"
               content={
-                <div className="flex gap-2 justify-between items-center">
-                  <div className="flex flex-col gap-2 justify-center items-center">
+                <div className="flex items-center justify-between gap-2">
+                  <div className="flex flex-col items-center justify-center gap-2">
                     <p>Хаалга</p>
                     <Button
                       onClick={showModal}
-                      className="flex justify-center items-center"
+                      className="flex items-center justify-center"
                     >
                       <QrcodeOutlined />
                     </Button>
                   </div>
-                  <div className="py-4 h-full border-2 border-dashed"></div>
-                  <div className="flex flex-col gap-2 justify-center items-center">
+                  <div className="h-full py-4 border-2 border-dashed"></div>
+                  <div className="flex flex-col items-center justify-center gap-2">
                     <p>Ширээ</p>
                     <Button
                       onClick={showModal2}
-                      className="flex justify-center items-center"
+                      className="flex items-center justify-center"
                     >
                       <QrcodeOutlined />
                     </Button>
                   </div>
-                  <div className="py-4 h-full border-2 border-dashed"></div>
-                  <div className="flex flex-col gap-2 justify-center items-center">
+                  <div className="h-full py-4 border-2 border-dashed"></div>
+                  <div className="flex flex-col items-center justify-center gap-2">
                     <p>Гадаа</p>
                     <Button
                       onClick={showModal3}
-                      className="flex justify-center items-center"
+                      className="flex items-center justify-center"
                     >
                       <QrcodeOutlined />
                     </Button>
@@ -652,7 +704,7 @@ export default function ajiltniiJagsaalt() {
               }
             >
               <Button
-                className="flex justify-center items-center"
+                className="flex items-center justify-center"
                 onClick={() => navigateToPage(id)}
               >
                 <QrcodeOutlined />
@@ -674,15 +726,15 @@ export default function ajiltniiJagsaalt() {
         render: (data) => {
           const id = data._id;
           return (
-            <div className="flex flex-row justify-center items-center w-full h-full">
+            <div className="flex flex-row items-center justify-center w-full h-full">
               <Popover
                 placement="bottom"
                 trigger="click"
                 content={() => (
-                  <div className="flex flex-col space-y-2 w-24">
+                  <div className="flex flex-col w-24 space-y-2">
                     {nevtersenAjiltanErkh === "superAdmin" && (
                       <a
-                        className="flex justify-between items-center p-2 w-full rounded-lg ant-dropdown-link hover:bg-green-100 dark:hover:bg-gray-600"
+                        className="flex items-center justify-between w-full p-2 rounded-lg ant-dropdown-link hover:bg-green-100 dark:hover:bg-gray-600"
                         onClick={() => erkhUgyu(negAjiltan, id)}
                       >
                         <UserAddOutlined style={{ fontSize: "18px" }} />
@@ -690,7 +742,7 @@ export default function ajiltniiJagsaalt() {
                       </a>
                     )}
                     <a
-                      className="flex justify-between items-center p-2 w-full rounded-lg ant-dropdown-link hover:bg-green-100 dark:hover:bg-gray-600"
+                      className="flex items-center justify-between w-full p-2 rounded-lg ant-dropdown-link hover:bg-green-100 dark:hover:bg-gray-600"
                       onClick={() => zasya(id)}
                     >
                       <EditOutlined style={{ fontSize: "18px" }} />
@@ -704,7 +756,7 @@ export default function ajiltniiJagsaalt() {
                       onConfirm={() => ajiltanUstgakh(id)}
                     >
                       {nevtersenAjiltanErkh !== "boss" && (
-                        <a className="flex justify-between items-center p-2 w-full rounded-lg ant-dropdown-link hover:bg-green-100 dark:hover:bg-gray-600">
+                        <a className="flex items-center justify-between w-full p-2 rounded-lg ant-dropdown-link hover:bg-green-100 dark:hover:bg-gray-600">
                           <DeleteOutlined
                             style={{ fontSize: "18px", color: "red" }}
                           />
@@ -717,7 +769,7 @@ export default function ajiltniiJagsaalt() {
               >
                 <a
                   onClick={() => navigateToPage(id)}
-                  className="flex justify-center items-center p-1 rounded-full hover:bg-gray-200"
+                  className="flex items-center justify-center p-1 rounded-full hover:bg-gray-200"
                 >
                   <MoreOutlined style={{ fontSize: "18px" }} />
                 </a>
@@ -1004,132 +1056,132 @@ export default function ajiltniiJagsaalt() {
           </Button>
 
           <div className="flex gap-2 ml-auto">
-          <div className="hidden flex-wrap gap-2 justify-center items-center md:flex">
-            <Dropdown
-              overlay={
-                <Menu>
-                  <Menu.Item onClick={() => excelOruulya()}>
-                    Excel оруулах
-                  </Menu.Item>
-                </Menu>
-              }
-              trigger="click"
-            >
-              <button className="flex justify-between items-center px-4 py-2 w-40 h-10 bg-white rounded-lg border cursor-pointer">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="24"
-                  height="24"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  className="mr-2 w-4 h-4"
-                >
-                  <path d="M14.5 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V7.5L14.5 2z"></path>
-                  <polyline points="14 2 14 8 20 8"></polyline>
-                  <line x1="16" y1="13" x2="8" y2="13"></line>
-                  <line x1="16" y1="17" x2="8" y2="17"></line>
-                  <line x1="10" y1="9" x2="8" y2="9"></line>
-                </svg>
-                <span className="text-sm">Excel</span>
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="24"
-                  height="24"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  className="ml-2 w-4 h-4"
-                >
-                  <polyline points="6 9 12 15 18 9"></polyline>
-                </svg>
-              </button>
-            </Dropdown>
-            <BaganiinSongolt
-              shineBagana={shineBagana}
-              setShineBagana={setShineBagana}
-              className="flex justify-between items-center px-4 py-2 w-40 h-10 text-sm"
-              columns={[
-                {
-                  title: <div className="text-center">Албан тушаал</div>,
-                  width: "8rem",
-                  dataIndex: "albanTushaal",
-                  key: "albanTushaal",
-                  ellipsis: true,
-                },
-                {
-                  title: <div className="text-center">Дүүрэг</div>,
-                  dataIndex: "duureg",
-                  width: "6rem",
-                  key: "duureg",
-                  ellipsis: true,
-                },
-                {
-                  title: <div className="text-center">Нэр дуудлага</div>,
-                  dataIndex: "porool",
-                  width: "6rem",
-                  key: "porool",
-                  ellipsis: true,
-                },
-                {
-                  title: <div className="text-center">Утас</div>,
-                  dataIndex: "utas",
-                  width: "6rem",
-                  key: "utas",
-                  ellipsis: true,
-                },
-                {
-                  title: <div className="text-center">Эрх</div>,
-                  dataIndex: "erkh",
-                  width: "6rem",
-                  key: "erkh",
-                  ellipsis: true,
-                  render: (data) => {
-                    if (data === "superAdmin")
-                      return (
-                        <div className="uppercase border text-center font-[400] rounded-full w-full py-1 px-2 bg-red-300">
-                          super admin
-                        </div>
-                      );
-                    if (data === "admin")
-                      return (
-                        <div className="uppercase border text-center font-[400] rounded-full w-full py-1 px-2 bg-blue-300">
-                          admin
-                        </div>
-                      );
-                    if (data === "boss")
-                      return (
-                        <div className="uppercase border text-center font-[400] rounded-full w-full py-1 px-2 bg-yellow-300 ">
-                          boss
-                        </div>
-                      );
-                    if (data === "userAdmin")
-                      return (
-                        <div className="uppercase border text-center font-[400] rounded-full w-full py-1 px-2 bg-green-300">
-                          user admin
-                        </div>
-                      );
-                    if (!data) return <div> </div>;
+            <div className="flex-wrap items-center justify-center hidden gap-2 md:flex">
+              <Dropdown
+                overlay={
+                  <Menu>
+                    <Menu.Item onClick={() => excelOruulya()}>
+                      Excel оруулах
+                    </Menu.Item>
+                  </Menu>
+                }
+                trigger="click"
+              >
+                <button className="flex items-center justify-between w-40 h-10 px-4 py-2 bg-white border rounded-lg cursor-pointer">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    className="w-4 h-4 mr-2"
+                  >
+                    <path d="M14.5 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V7.5L14.5 2z"></path>
+                    <polyline points="14 2 14 8 20 8"></polyline>
+                    <line x1="16" y1="13" x2="8" y2="13"></line>
+                    <line x1="16" y1="17" x2="8" y2="17"></line>
+                    <line x1="10" y1="9" x2="8" y2="9"></line>
+                  </svg>
+                  <span className="text-sm">Excel</span>
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    className="w-4 h-4 ml-2"
+                  >
+                    <polyline points="6 9 12 15 18 9"></polyline>
+                  </svg>
+                </button>
+              </Dropdown>
+              <BaganiinSongolt
+                shineBagana={shineBagana}
+                setShineBagana={setShineBagana}
+                className="flex items-center justify-between w-40 h-10 px-4 py-2 text-sm"
+                columns={[
+                  {
+                    title: <div className="text-center">Албан тушаал</div>,
+                    width: "8rem",
+                    dataIndex: "albanTushaal",
+                    key: "albanTushaal",
+                    ellipsis: true,
                   },
-                },
-              ]}
-            />
-          </div>
-          <Button
-            type="primary"
-            danger
-            className="flex justify-center items-center px-4 py-2 w-40 h-10"
-            disabled={selectedRowKeys.length === 0}
-            onClick={handleDeleteSelected}
-          >
-            <span className="text-sm">Устгах ({selectedRowKeys.length})</span>
-          </Button>
+                  {
+                    title: <div className="text-center">Дүүрэг</div>,
+                    dataIndex: "duureg",
+                    width: "6rem",
+                    key: "duureg",
+                    ellipsis: true,
+                  },
+                  {
+                    title: <div className="text-center">Нэр дуудлага</div>,
+                    dataIndex: "porool",
+                    width: "6rem",
+                    key: "porool",
+                    ellipsis: true,
+                  },
+                  {
+                    title: <div className="text-center">Утас</div>,
+                    dataIndex: "utas",
+                    width: "6rem",
+                    key: "utas",
+                    ellipsis: true,
+                  },
+                  {
+                    title: <div className="text-center">Эрх</div>,
+                    dataIndex: "erkh",
+                    width: "6rem",
+                    key: "erkh",
+                    ellipsis: true,
+                    render: (data) => {
+                      if (data === "superAdmin")
+                        return (
+                          <div className="uppercase border text-center font-[400] rounded-full w-full py-1 px-2 bg-red-300">
+                            super admin
+                          </div>
+                        );
+                      if (data === "admin")
+                        return (
+                          <div className="uppercase border text-center font-[400] rounded-full w-full py-1 px-2 bg-blue-300">
+                            admin
+                          </div>
+                        );
+                      if (data === "boss")
+                        return (
+                          <div className="uppercase border text-center font-[400] rounded-full w-full py-1 px-2 bg-yellow-300 ">
+                            boss
+                          </div>
+                        );
+                      if (data === "userAdmin")
+                        return (
+                          <div className="uppercase border text-center font-[400] rounded-full w-full py-1 px-2 bg-green-300">
+                            user admin
+                          </div>
+                        );
+                      if (!data) return <div> </div>;
+                    },
+                  },
+                ]}
+              />
+            </div>
+            <Button
+              type="primary"
+              danger
+              className="flex items-center justify-center w-40 h-10 px-4 py-2"
+              disabled={selectedRowKeys.length === 0}
+              onClick={handleDeleteSelected}
+            >
+              <span className="text-sm">Устгах ({selectedRowKeys.length})</span>
+            </Button>
           </div>
         </div>
       </div>
@@ -1273,8 +1325,8 @@ export default function ajiltniiJagsaalt() {
             ref={printRef2}
             className="flex flex-col bg-white justify-between items-center p-12 h-[600px]"
           >
-            <div className="flex flex-col gap-4 justify-center items-center w-full h-1/2 print:mt-12">
-              <p className="uppercase font-[600]">тангарга</p>
+            <div className="flex flex-col items-center justify-center w-full gap-4 h-1/2 print:mt-12">
+              <p className="uppercase font-[600]">тангараг</p>
               <p className="space-y-2 text-justify">
                 Монгол Улсын иргэн би цагдаагийн албанд ажиллахдаа Монгол Улсын
                 Үндсэн хууль, бусад хууль, алба хаагчийн ёс зүй, сахилга, нууцыг
@@ -1283,22 +1335,22 @@ export default function ajiltniiJagsaalt() {
                 хуулийн хариуцлага хүлээнэ.
               </p>
             </div>
-            <div className="flex flex-col gap-4 justify-center items-center h-1/2 print:mt-32">
-              <div className="flex gap-8 justify-center items-center">
+            <div className="flex flex-col items-center justify-center gap-4 h-1/2 print:mt-32">
+              <div className="flex items-center justify-center gap-8">
                 <div className="flex flex-col justify-start items-center w-[200px] h-[200px] border rounded-full overflow-hidden">
                   <img
                     className="object-contain"
                     src={`${url}/file?path=ajiltan/${negAjiltan?.zurgiinId}`}
                   />
                 </div>
-                <div className="flex justify-center items-center p-6 border">
+                <div className="flex items-center justify-center p-6 border">
                   <QRCode
                     value={`https://sudalgaa.zevtabs.mn/anket/${negAjiltan._id}/anket`}
                     renderAs="svg"
                     level="H"
                     size={150}
                     imageSettings={{
-                      src: "/assets/policeLogo.png",
+                      src: "/assets/shuukhLogo.webp",
                       excavate: true,
                       height: 40,
                       width: 40,
@@ -1307,11 +1359,11 @@ export default function ajiltniiJagsaalt() {
                 </div>
               </div>
               <div className="flex w-full">
-                <div className="flex flex-col gap-2 justify-center items-start w-1/4">
+                <div className="flex flex-col items-start justify-center w-1/4 gap-2">
                   <span>Нэр :</span>
                   <span>Тасаг :</span>
                 </div>
-                <div className="flex flex-col gap-2 justify-center items-start w-3/4">
+                <div className="flex flex-col items-start justify-center w-3/4 gap-2">
                   <span>
                     {negAjiltan?.ovog?.[0]}.{negAjiltan?.ner}
                   </span>
@@ -1325,16 +1377,16 @@ export default function ajiltniiJagsaalt() {
             ref={printRef3}
             className="flex flex-col bg-white justify-between items-center p-12 h-[600px]"
           >
-            <div className="flex flex-col gap-4 justify-center items-center print:mt-32">
-              <div className="flex gap-8 justify-center items-center">
-                <div className="flex justify-center items-center p-6 border">
+            <div className="flex flex-col items-center justify-center gap-4 print:mt-32">
+              <div className="flex items-center justify-center gap-8">
+                <div className="flex items-center justify-center p-6 border">
                   <QRCode
                     value={`https://sudalgaa.zevtabs.mn/anket/${negAjiltan._id}/anket`}
                     renderAs="svg"
                     level="H"
                     size={350}
                     imageSettings={{
-                      src: "/assets/policeLogo.png",
+                      src: "/assets/shuukhLogo,webp",
                       excavate: true,
                       height: 100,
                       width: 100,
@@ -1347,13 +1399,13 @@ export default function ajiltniiJagsaalt() {
         ) : (
           <div
             ref={printRef}
-            className="flex overflow-y-auto flex-col justify-center items-center p-12"
+            className="flex flex-col items-center justify-center p-12 overflow-y-auto"
           >
-            <div className="flex flex-col justify-center items-center mb-8 w-full">
+            <div className="flex flex-col items-center justify-center w-full mb-8">
               <h1 className="mb-8 text-lg font-bold">
                 ТА ДООРХ QR-ЫГ УНШУУЛЖ, САНАЛАА ӨГНӨ ҮҮ.
               </h1>
-              <h1 className="flex justify-center items-center text-justify">
+              <h1 className="flex items-center justify-center text-justify">
                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Тээврийн цагдаагийн албанаас
                 алба хаагч бүрийн харилцаа, хандлага, байгууллагын үйл
                 ажиллагааг сайжруулах зорилгоор Танд үйлчилж байгаа алба
@@ -1361,22 +1413,22 @@ export default function ajiltniiJagsaalt() {
                 байна.
               </h1>
             </div>
-            <div className="flex flex-col gap-4 justify-center items-center">
-              <div className="flex gap-8 justify-center items-center">
+            <div className="flex flex-col items-center justify-center gap-4">
+              <div className="flex items-center justify-center gap-8">
                 <div className="flex flex-col justify-start items-center w-[200px] h-[200px] border rounded-full overflow-hidden">
                   <img
                     className="object-contain"
                     src={`${url}/file?path=ajiltan/${negAjiltan?.zurgiinId}`}
                   />
                 </div>
-                <div className="flex justify-center items-center p-6 border">
+                <div className="flex items-center justify-center p-6 border">
                   <QRCode
                     value={`https://sudalgaa.zevtabs.mn/anket/${negAjiltan._id}/anket`}
                     renderAs="svg"
                     level="H"
                     size={150}
                     imageSettings={{
-                      src: "/assets/policeLogo.png",
+                      src: "/assets/shuukhLogo.webp",
                       excavate: true,
                       height: 40,
                       width: 40,
@@ -1385,14 +1437,14 @@ export default function ajiltniiJagsaalt() {
                 </div>
               </div>
               <div className="flex w-full">
-                <div className="flex flex-col gap-2 justify-center items-start w-1/4">
+                <div className="flex flex-col items-start justify-center w-1/4 gap-2">
                   <span>Овог :</span>
                   <span>Нэр :</span>
                   <span>Цол :</span>
                   <span>Тасаг :</span>
                   <span>Хэлтэс :</span>
                 </div>
-                <div className="flex flex-col gap-2 justify-center items-start w-3/4">
+                <div className="flex flex-col items-start justify-center w-3/4 gap-2">
                   <span>{negAjiltan?.ovog}</span>
                   <span>{negAjiltan?.ner}</span>
                   <span>{negAjiltan?.tsol}</span>
@@ -1403,7 +1455,7 @@ export default function ajiltniiJagsaalt() {
             </div>
           </div>
         )}
-        <div className="flex gap-4 justify-end items-center mt-4">
+        <div className="flex items-center justify-end gap-4 mt-4">
           <Button type="default" onClick={handleCancel}>
             Хаах
           </Button>

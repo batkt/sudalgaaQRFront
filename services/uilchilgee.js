@@ -5,12 +5,12 @@ import socketIOClient from "socket.io-client";
 
 // export const url = "http://feedback.transportation.police.gov.mn:8083";
 //export const url = "http://103.143.40.41:8085";
-export const url = "https://sudalgaa.zevtabs.mn/api";
+export const url = "https://qr.zevtabs.mn/api";
 // export const url = "http://192.168.1.241:8085";
 
 // export const url2 = "http://manager.transportation.police.gov.mn:8084";
 //export const url2 = "http://103.143.40.91:8084";
-export const url2 = "https://tsagdaa.zevtabs.mn/api";
+export const url2 = "https://qr.zevtabs.mn/api";
 
 export const socket = () => socketIOClient(url, { transports: ["websocket"] });
 
@@ -34,7 +34,7 @@ const uilchilgee = (token) => {
       typeof window === "undefined"
         ? // ? "http://feedback.transportation.police.gov.mn:8083"
           // "http://103.143.40.41:8085"
-          "https://sudalgaa.zevtabs.mn/api"
+          "https://qr.zevtabs.mn/api"
         : // ? "http://192.168.1.241:8085"
           url,
     headers,
@@ -51,7 +51,7 @@ export const uilchilgee2 = (token) => {
       typeof window === "undefined"
         ? // ? "http://manager.transportation.police.gov.mn:8084"
           // "http://103.143.40.91:8084"
-          "https://tsagdaa.zevtabs.mn/api"
+          "https://qr.zevtabs.mn/api"
         : url2,
     headers,
   });

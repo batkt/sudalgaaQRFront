@@ -90,9 +90,9 @@ export default function burtgekh() {
 
   return (
     <Nav>
-      <div className="relative w-full flex flex-col px-0 justify-center items-center md:flex-row">
-        <h1 className="text-4xl font-bold text-gray-900 gap-2">Бүртгэх</h1>
-        <div className="flex flex-col justify-center items-center w-full">
+      <div className="relative flex flex-col items-center justify-center w-full px-0 md:flex-row">
+        <h1 className="gap-2 text-4xl font-bold text-gray-900">Бүртгэх</h1>
+        <div className="flex flex-col items-center justify-center w-full">
           <Form
             form={form}
             ref={ref}
@@ -108,10 +108,10 @@ export default function burtgekh() {
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-1 md:gap-0">
               <Form.Item
                 name="zurgiinId"
-                className="col-span-full md:col-span-1 mb-4"
+                className="mb-4 col-span-full md:col-span-1"
                 colon={false}
                 label={
-                  <div className="flex items-center space-x-5 pt-3">
+                  <div className="flex items-center pt-3 space-x-5">
                     <span>Зураг оруулах:</span>
                     <Upload
                       showUploadList={false}
@@ -368,7 +368,7 @@ export default function burtgekh() {
               level="H"
               size={200}
               imageSettings={{
-                src: "/assets/policeLogo.png",
+                src: "/assets/shuukhLogo.webp",
                 excavate: true,
                 height: 40,
                 width: 40,

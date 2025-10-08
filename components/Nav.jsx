@@ -176,48 +176,55 @@ const Nav = ({ children, onSearch }) => {
   return (
     <div>
       <div className="overflow-hidden">
-        <div className="flex justify-between items-center w-full bg-white shadow-md navi">
-          <div className="flex gap-4 justify-center items-center">
+        <div className="flex items-center justify-between w-full bg-white shadow-md navi">
+          <div className="flex items-center justify-center gap-4">
             <button
-              className="flex justify-center items-center p-2 mx-4 rounded-lg transition-colors duration-200 drawer-toggle sm:mx-8 hover:bg-gray-100"
+              className="flex items-center justify-center p-2 mx-4 transition-colors duration-200 rounded-lg drawer-toggle sm:mx-8 hover:bg-gray-100"
               onClick={toggleDrawer}
             >
               {isDrawerOpen ? (
-                <CloseOutlined className="flex justify-center items-center w-12 h-12" />
+                <CloseOutlined className="flex items-center justify-center w-12 h-12" />
               ) : (
-                <MenuOutlined className="flex justify-center items-center w-12 h-12" />
+                <MenuOutlined className="flex items-center justify-center w-12 h-12" />
               )}
             </button>
-            <div className="flex relative justify-center items-center px-4 py-2 h-10 bg-gray-100 rounded-2xl w-fit sm:w-full">
+            <div className="relative flex items-center justify-center h-10 px-4 py-2 bg-gray-100 rounded-2xl w-fit sm:w-full">
               <input
                 onChange={(e) => onSearch?.(e.target.value)}
                 className="w-24 bg-gray-100 outline-none select-all sm:w-48"
                 type="text"
                 placeholder="Хайлт..."
               />
-              <button className="absolute right-0 p-2 h-full rounded-full transition-colors duration-200 aspect-square hover:text-blue-400">
+              <button className="absolute right-0 h-full p-2 transition-colors duration-200 rounded-full aspect-square hover:text-blue-400">
                 <BsSearch />
               </button>
             </div>
-            {/* <div className='flex gap-2 justify-center items-center px-4 py-2 h-10 bg-gray-100 rounded-2xl'>
+            {/* <div className='flex items-center justify-center h-10 gap-2 px-4 py-2 bg-gray-100 rounded-2xl'>
               <button className='text-sm'>ХЭЛ</button>
               <BsCaretDownFill className='w-2'/>
             </div> */}
           </div>
-          <div className="flex hidden absolute left-1/2 justify-center items-center w-full transform -translate-x-1/2 lg:flex pointer-events-none">
-            <Link href="/dashboard/analytic" className="flex items-center cursor-pointer pointer-events-auto">
-              <img className="w-32 h-32" src="/assets/logo.png" alt="logo" />
-              <div className="hidden flex-col justify-center items-center xl:flex">
+          <div className="absolute flex items-center justify-center w-full transform -translate-x-1/2 pointer-events-none left-1/2 lg:flex">
+            <Link
+              href="/dashboard/analytic"
+              className="flex items-center gap-4 cursor-pointer pointer-events-auto"
+            >
+              <img
+                className="object-contain w-16 h-12"
+                src="/assets/logo.webp"
+                alt="logo"
+              />
+              <div className="flex-col items-center justify-center hidden xl:flex">
                 <h2 className="w-full text-2xl text-center border-b">
-                  ТЭЭВРИЙН ЦАГДААГИЙН АЛБА
+                  ШҮҮХИЙН ШИЙДВЭР ГҮЙЦЭТГЭХ ЕРӨНХИЙ ГАЗАР
                 </h2>
                 <h2 className="w-full text-sm text-center border-b">
-                  ---ХӨДӨЛГӨӨНИЙ АЮУЛГҮЙ БАЙДЛЫН ТӨЛӨӨ---
+                  ---ЗАСГИЙН ГАЗРЫН ХЭРЭГЖҮҮЛЭГЧ АГЕНТ---
                 </h2>
               </div>
             </Link>
           </div>
-          <div className="flex gap-6 justify-center items-center pr-16 switch sm:gap-4 md:gap-6">
+          <div className="flex items-center justify-center gap-6 pr-16 switch sm:gap-4 md:gap-6">
             {/* <input
               type="checkbox"
               className="checkbox"
@@ -230,19 +237,25 @@ const Nav = ({ children, onSearch }) => {
             <BsBell className="hidden cursor-pointer sm:flex" />
             <FullscreenButton /> */}
             <div className="flex items-center gap-2 px-3 py-2 bg-gray-100 rounded-lg">
-              <div className="text-sm font-medium text-gray-700" style={{ fontFamily: 'Arial, sans-serif' }}>
-                {currentTime.toLocaleTimeString('mn-MN', { 
-                  hour: '2-digit', 
-                  minute: '2-digit', 
-                  second: '2-digit',
-                  hour12: false 
+              <div
+                className="text-sm font-medium text-gray-700"
+                style={{ fontFamily: "Arial, sans-serif" }}
+              >
+                {currentTime.toLocaleTimeString("mn-MN", {
+                  hour: "2-digit",
+                  minute: "2-digit",
+                  second: "2-digit",
+                  hour12: false,
                 })}
               </div>
-              <div className="text-xs text-gray-500" style={{ fontFamily: 'Arial, sans-serif' }}>
-                {currentTime.toLocaleDateString('en-CA', {
-                  year: 'numeric',
-                  month: '2-digit',
-                  day: '2-digit'
+              <div
+                className="text-xs text-gray-500"
+                style={{ fontFamily: "Arial, sans-serif" }}
+              >
+                {currentTime.toLocaleDateString("en-CA", {
+                  year: "numeric",
+                  month: "2-digit",
+                  day: "2-digit",
                 })}
               </div>
             </div>
@@ -276,7 +289,7 @@ const Nav = ({ children, onSearch }) => {
               }
               trigger="click"
             >
-              <div className="flex overflow-hidden justify-center items-center rounded-full border-2 transition-colors duration-300 hover:border-slate-500 hover:shadow-lg">
+              <div className="flex items-center justify-center overflow-hidden transition-colors duration-300 border-2 rounded-full hover:border-slate-500 hover:shadow-lg">
                 <img
                   className="w-[40px] h-[40px] object-cover"
                   src={
@@ -293,12 +306,16 @@ const Nav = ({ children, onSearch }) => {
           <div
             ref={drawerRef}
             className={`drawer-container fixed left-0 z-[1000] ${
-              isDrawerOpen ? "open" : ""}`}
+              isDrawerOpen ? "open" : ""
+            }`}
           >
             <div className="drawer-content">
               <ul className="truncate cursor-pointer select-none">
                 <li className="flex flex-col justify-center items-center border-b border-r h-[var(--drawer-menunuud)] text-xs gap-2 font-[300] transition-all duration-200 hover:bg-blue-50 hover:text-blue-600 hover:scale-105 hover:shadow-md">
-                  <Link href="/dashboard/analytic" className="flex flex-col justify-center items-center w-full h-full">
+                  <Link
+                    href="/dashboard/analytic"
+                    className="flex flex-col items-center justify-center w-full h-full"
+                  >
                     <Image
                       src="/assets/analysis.png"
                       width={35}
@@ -429,10 +446,10 @@ const Nav = ({ children, onSearch }) => {
           >
             <div className="h-[calc(100vh-100px)] p-2">
               {songolt === "sanalKhuselt" && (
-                <ul className="flex flex-col gap-4 justify-center items-start truncate cursor-pointer select-none">
+                <ul className="flex flex-col items-start justify-center gap-4 truncate cursor-pointer select-none">
                   <Link
                     href="/sanalKhuselt/analytics"
-                    className="flex justify-center items-center w-full rounded-lg transition-all duration-200 hover:bg-blue-50 hover:text-blue-600 hover:shadow-md hover:translate-x-2"
+                    className="flex items-center justify-center w-full transition-all duration-200 rounded-lg hover:bg-blue-50 hover:text-blue-600 hover:shadow-md hover:translate-x-2"
                   >
                     <span className="text-sm font-[300] flex gap-2 justify-center items-center text-gray-500 hover:text-blue-600">
                       <BsGraphUp />
@@ -441,7 +458,7 @@ const Nav = ({ children, onSearch }) => {
                   </Link>
                   <Link
                     href="/sanalKhuselt/turshilt"
-                    className="flex justify-center items-center w-full rounded-lg transition-all duration-200 hover:bg-blue-50 hover:text-blue-600 hover:shadow-md hover:translate-x-2"
+                    className="flex items-center justify-center w-full transition-all duration-200 rounded-lg hover:bg-blue-50 hover:text-blue-600 hover:shadow-md hover:translate-x-2"
                   >
                     <span className="text-sm font-[300] flex gap-2 justify-center items-center text-gray-500 hover:text-blue-600">
                       Туршилт
@@ -449,7 +466,7 @@ const Nav = ({ children, onSearch }) => {
                   </Link>
                   <Link
                     href="/sanalKhuselt/turshilt"
-                    className="flex justify-center items-center w-full rounded-lg transition-all duration-200 hover:bg-blue-50 hover:text-blue-600 hover:shadow-md hover:translate-x-2"
+                    className="flex items-center justify-center w-full transition-all duration-200 rounded-lg hover:bg-blue-50 hover:text-blue-600 hover:shadow-md hover:translate-x-2"
                   >
                     <span className="text-sm font-[300] flex gap-2 justify-center items-center text-gray-500 hover:text-blue-600">
                       Туршилт
@@ -458,10 +475,10 @@ const Nav = ({ children, onSearch }) => {
                 </ul>
               )}
               {songolt === "khuudsuud" && (
-                <ul className="flex flex-col gap-4 justify-center items-start truncate cursor-pointer select-none">
+                <ul className="flex flex-col items-start justify-center gap-4 truncate cursor-pointer select-none">
                   <Link
                     href="/khuudsuud/ajiltniiJagsaalt"
-                    className="flex justify-start items-start w-full rounded-lg transition-all duration-200 hover:bg-blue-50 hover:text-blue-600 hover:shadow-md hover:translate-x-2"
+                    className="flex items-start justify-start w-full transition-all duration-200 rounded-lg hover:bg-blue-50 hover:text-blue-600 hover:shadow-md hover:translate-x-2"
                   >
                     <span className="text-sm font-[300] flex gap-2 justify-center items-center text-gray-500 hover:text-blue-600">
                       <FiUsers />
@@ -470,7 +487,7 @@ const Nav = ({ children, onSearch }) => {
                   </Link>
                   {/* <Link
                     href="/khuudsuud/burtgekh"
-                    className="flex justify-start items-start w-full rounded-lg transition-all duration-200 hover:bg-blue-50 hover:text-blue-600 hover:shadow-md hover:translate-x-2"
+                    className="flex items-start justify-start w-full transition-all duration-200 rounded-lg hover:bg-blue-50 hover:text-blue-600 hover:shadow-md hover:translate-x-2"
                   >
                     <span className="text-sm font-[300] flex gap-2 justify-center items-center text-gray-500 hover:text-blue-600">
                       <FiUserPlus />
@@ -480,10 +497,10 @@ const Nav = ({ children, onSearch }) => {
                 </ul>
               )}
               {songolt === "application" && (
-                <ul className="flex flex-col gap-4 justify-center items-start truncate cursor-pointer select-none">
+                <ul className="flex flex-col items-start justify-center gap-4 truncate cursor-pointer select-none">
                   <Link
                     href="/application/khariultKharakh"
-                    className="flex justify-start items-start w-full rounded-lg transition-all duration-200 hover:bg-blue-50 hover:text-blue-600 hover:shadow-md hover:translate-x-2"
+                    className="flex items-start justify-start w-full transition-all duration-200 rounded-lg hover:bg-blue-50 hover:text-blue-600 hover:shadow-md hover:translate-x-2"
                   >
                     <span className="text-sm font-[300] flex gap-2 justify-center items-center text-gray-500 hover:text-blue-600">
                       <BsCheckCircle />
@@ -492,24 +509,24 @@ const Nav = ({ children, onSearch }) => {
                   </Link>
                   <Link
                     href="/application/sudalgaa"
-                    className="flex justify-start items-start w-full rounded-lg transition-all duration-200 hover:bg-blue-50 hover:text-blue-600 hover:shadow-md hover:translate-x-2"
+                    className="flex items-start justify-start w-full transition-all duration-200 rounded-lg hover:bg-blue-50 hover:text-blue-600 hover:shadow-md hover:translate-x-2"
                   >
                     <span className="text-sm font-[300] flex gap-2 justify-center items-center text-gray-500 hover:text-blue-600">
                       <BsCalculator />
                       Судалгаа
                     </span>
                   </Link>
-                  {/* <Link href="/application/qrKhuudas" className='flex justify-center items-center'>
+                  {/* <Link href="/application/qrKhuudas" className='flex items-center justify-center'>
                   <span className='text-sm font-[300] flex gap-2'><BiQr/>QR</span>
                 </Link> */}
                 </ul>
               )}
               {/* Dashboard submenu - commented out since dashboard now goes directly to page */}
               {/* {songolt === "dashboard" && (
-                <ul className="flex flex-col gap-4 justify-center items-start truncate cursor-pointer select-none">
+                <ul className="flex flex-col items-start justify-center gap-4 truncate cursor-pointer select-none">
                   <Link
                     href="/dashboard/analytic"
-                    className="flex justify-start items-start w-full rounded-lg transition-all duration-200 hover:bg-blue-50 hover:text-blue-600 hover:shadow-md hover:translate-x-2"
+                    className="flex items-start justify-start w-full transition-all duration-200 rounded-lg hover:bg-blue-50 hover:text-blue-600 hover:shadow-md hover:translate-x-2"
                   >
                     <span className="text-sm font-[300] flex gap-2 justify-center items-center text-gray-500 hover:text-blue-600">
                       <IoIosAnalytics />
@@ -518,7 +535,7 @@ const Nav = ({ children, onSearch }) => {
                   </Link>
                   <Link
                     href="/dashboard/uilAjillagaa"
-                    className="flex justify-start items-start w-full rounded-lg transition-all duration-200 hover:bg-blue-50 hover:text-blue-600 hover:shadow-md hover:translate-x-2"
+                    className="flex items-start justify-start w-full transition-all duration-200 rounded-lg hover:bg-blue-50 hover:text-blue-600 hover:shadow-md hover:translate-x-2"
                   >
                     <span className="text-sm font-[300] flex gap-2 justify-center items-center text-gray-500 hover:text-blue-600">
                       <IoIosAnalytics />
@@ -528,10 +545,10 @@ const Nav = ({ children, onSearch }) => {
                 </ul>
               )} */}
               {songolt === "keyword" && (
-                <ul className="flex flex-col gap-4 justify-center items-start truncate cursor-pointer select-none">
+                <ul className="flex flex-col items-start justify-center gap-4 truncate cursor-pointer select-none">
                   <Link
                     href="/dashboard/keyword"
-                    className="flex justify-start items-start w-full rounded-lg transition-all duration-200 hover:bg-blue-50 hover:text-blue-600 hover:shadow-md hover:translate-x-2"
+                    className="flex items-start justify-start w-full transition-all duration-200 rounded-lg hover:bg-blue-50 hover:text-blue-600 hover:shadow-md hover:translate-x-2"
                   >
                     <span className="text-sm font-[300] flex gap-2 justify-center items-center text-gray-500 hover:text-blue-600">
                       <BsCheckCircle />
@@ -539,19 +556,19 @@ const Nav = ({ children, onSearch }) => {
                     </span>
                   </Link>
 
-                  {/* <Link href="/dashboard/turshilt" className='flex justify-center items-center'>
+                  {/* <Link href="/dashboard/turshilt" className='flex items-center justify-center'>
                   <span className='text-sm font-[300] flex gap-2 justify-center items-center text-gray-500'><BsCalculator/>Туршилт</span>
                 </Link> */}
-                  {/* <Link href="/application/qrKhuudas" className='flex justify-center items-center'>
+                  {/* <Link href="/application/qrKhuudas" className='flex items-center justify-center'>
                   <span className='text-sm font-[300] flex gap-2'><BiQr/>QR</span>
                 </Link> */}
                 </ul>
               )}
               {songolt === "tokhirgoo" && (
-                <ul className="flex flex-col gap-4 justify-center items-start truncate cursor-pointer select-none">
+                <ul className="flex flex-col items-start justify-center gap-4 truncate cursor-pointer select-none">
                   <Link
                     href="/dashboard/sudalgaaniiTokhirgoo"
-                    className="flex justify-center items-center"
+                    className="flex items-center justify-center"
                   >
                     <span className="text-sm font-[300] flex gap-2 justify-center items-center text-gray-500 hover:text-blue-600">
                       <RiChatSettingsLine />
@@ -559,10 +576,10 @@ const Nav = ({ children, onSearch }) => {
                     </span>
                   </Link>
 
-                  <ul className="flex flex-col gap-4 justify-center items-start truncate cursor-pointer select-none">
+                  <ul className="flex flex-col items-start justify-center gap-4 truncate cursor-pointer select-none">
                     <Link
                       href="/dashboard/medegdelIlgeekh"
-                      className="flex justify-center items-center"
+                      className="flex items-center justify-center"
                     >
                       <span className="text-sm font-[300] flex gap-2 justify-center items-center text-gray-500 hover:text-blue-600">
                         <MdOutlineSms />
@@ -570,10 +587,10 @@ const Nav = ({ children, onSearch }) => {
                       </span>
                     </Link>
                   </ul>
-                  <ul className="flex flex-col gap-4 justify-center items-start truncate cursor-pointer select-none">
+                  <ul className="flex flex-col items-start justify-center gap-4 truncate cursor-pointer select-none">
                     <Link
                       href="/application/tokhirgoo"
-                      className="flex justify-center items-center"
+                      className="flex items-center justify-center"
                     >
                       <span className="text-sm font-[300] flex gap-2 justify-center items-center text-gray-500 hover:text-blue-600">
                         <MdOutlineCategory />

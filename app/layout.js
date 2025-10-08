@@ -2,19 +2,15 @@
 
 import { AuthProvider } from "@/services/auth";
 import "@styles/globals.css";
-import { Inter, Roboto_Serif } from "next/font/google";
-
-const inter = Inter({ subsets: ["latin"] });
-const roboto = Roboto_Serif({ subsets: ["latin"], weight: "200" });
 
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <head>
-        <title>ТЭЭВРИЙН ЦАГДААГИЙН АЛБА</title>
-        <link rel="icon" href="/assets/policeLogo.png" />
+        <title>ШҮҮХИЙН ШИЙДВЭР ГҮЙЦЭТГЭХ ЕРӨНХИЙ ГАЗАР</title>
+        <link rel="icon" href="/assets/shuukhLogo.webp" />
       </head>
-      <body className={roboto.className}>
+      <body>
         <div>
           <div>
             <div />

@@ -47,7 +47,7 @@ const page = () => {
             level="H"
             size={200}
             imageSettings={{
-              src: "/assets/policeLogo.png",
+              src: "/assets/shuukhLogo.webp",
               excavate: true,
               height: 40,
               width: 40,

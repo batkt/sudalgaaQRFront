@@ -6,8 +6,6 @@ import moment from "moment";
 
 const AnalyticsFilters = memo(
   ({
-    selectedOption,
-    setSelectedOption,
     ognoo,
     onChangeOgnoo,
     tasagGaralt,
@@ -43,18 +41,7 @@ const AnalyticsFilters = memo(
             />
           </div>
 
-          <div className="grid w-full grid-cols-3 gap-2 lg:contents">
-            <div className="lg:min-w-fit lg:w-auto">
-              <Select
-                onChange={setSelectedOption}
-                className="w-full lg:min-w-fit"
-                value={selectedOption}
-                size="middle"
-              >
-                <Select.Option value="day">Өдөр</Select.Option>
-                <Select.Option value="month">Сар</Select.Option>
-              </Select>
-            </div>
+          <div className="grid w-full grid-cols-2 gap-2 lg:contents">
 
             <div className="lg:min-w-fit lg:w-auto">
               <Select

@@ -195,12 +195,6 @@ const Analytic = () => {
     `,
   });
 
-  const handleSelectChange = useCallback(
-    (value) => {
-      analyticsData.setSelectedOption(value);
-    },
-    [analyticsData.setSelectedOption]
-  );
 
   const showEmployeeDialogWithData = useCallback(
     (type) => {
@@ -251,8 +245,6 @@ const Analytic = () => {
         <div className="flex flex-col items-center justify-center w-full h-full gap-4 p-4 lg:gap-8 lg:p-0">
           <div className="flex flex-col lg:flex-row justify-between w-90vw lg:w-full gap-4 [@media(min-width:1024px)_and_(max-width:1280px)]:justify-center">
             <AnalyticsFilters
-              selectedOption={analyticsData.selectedOption}
-              setSelectedOption={handleSelectChange}
               ognoo={analyticsData.ognoo}
               onChangeOgnoo={analyticsData.onChangeOgnoo}
               tasagGaralt={analyticsData.tasagGaralt}

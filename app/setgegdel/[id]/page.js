@@ -177,8 +177,8 @@ export default function SetgegdelDetail() {
   if (loading) {
     return (
       <div className="min-h-screen bg-gray-50">
-        <div className="flex justify-center items-center p-4 min-h-screen">
-          <div className="p-8 w-full max-w-md bg-white rounded-lg border border-gray-200 shadow-sm">
+        <div className="flex items-center justify-center min-h-screen p-4">
+          <div className="w-full max-w-md p-8 bg-white border border-gray-200 rounded-lg shadow-sm">
             <div className="flex flex-col items-center text-center">
               <Spin size="large" />
               <p className="mt-4 text-gray-600">Сэтгэгдэл ачаалж байна...</p>
@@ -192,8 +192,8 @@ export default function SetgegdelDetail() {
   if (error || !record) {
     return (
       <div className="min-h-screen bg-gray-50">
-        <div className="flex justify-center items-center p-4 min-h-screen">
-          <div className="p-8 w-full max-w-md bg-white rounded-lg border border-gray-200 shadow-sm">
+        <div className="flex items-center justify-center min-h-screen p-4">
+          <div className="w-full max-w-md p-8 bg-white border border-gray-200 rounded-lg shadow-sm">
             <div className="flex flex-col items-center text-center">
               <div className="mb-4 text-6xl">😞</div>
               <h2 className="mb-2 text-xl font-semibold text-gray-800">
@@ -221,7 +221,7 @@ export default function SetgegdelDetail() {
     <>
       <Head>
         <title>Сэтгэгдлийн дэлгэрэнгүй</title>
-        <link rel="icon" href="/assets/logo.png" />
+        <link rel="icon" href="/assets/logo.webp" />
       </Head>
       <div className="min-h-screen bg-gray-50">
         <div
@@ -230,9 +230,9 @@ export default function SetgegdelDetail() {
         >
           {/* Header */}
           <div className="mb-4">
-            <div className="flex justify-end items-center mb-2">
+            <div className="flex items-center justify-end mb-2">
               {record.surugEsekh && (
-                <span className="px-2 py-1 text-xs font-medium text-red-600 bg-red-50 rounded-full border border-red-200">
+                <span className="px-2 py-1 text-xs font-medium text-red-600 border border-red-200 rounded-full bg-red-50">
                   Сөрөг сэтгэгдэл
                 </span>
               )}
@@ -247,7 +247,7 @@ export default function SetgegdelDetail() {
             {/* Left Column */}
             <div className="space-y-4">
               {/* Employee Info */}
-              <div className="p-4 bg-white rounded-lg border border-gray-200">
+              <div className="p-4 bg-white border border-gray-200 rounded-lg">
                 <h2 className="flex items-center mb-3 text-base font-semibold text-gray-900">
                   <UserOutlined className="mr-2 text-sm text-green-500" />
                   Алба хаагчийн мэдээлэл
@@ -287,7 +287,7 @@ export default function SetgegdelDetail() {
                   </div>
                 </div>
               </div>
-              <div className="p-4 bg-white rounded-lg border border-gray-200">
+              <div className="p-4 bg-white border border-gray-200 rounded-lg">
                 <h2 className="flex items-center mb-3 text-base font-semibold text-gray-900">
                   <PhoneOutlined className="mr-2 text-sm text-purple-500" />
                   Иргэний утасны дугаар
@@ -319,25 +319,25 @@ export default function SetgegdelDetail() {
 
               {/* Survey Answers */}
               {record.khariultuud && record.khariultuud.length > 0 && (
-                <div className="p-4 bg-white rounded-lg border border-gray-200">
+                <div className="p-4 bg-white border border-gray-200 rounded-lg">
                   <h2 className="flex items-center mb-3 text-base font-semibold text-gray-900">
                     <CalendarOutlined className="mr-2 text-sm text-orange-500" />
                     Анкетын хариултууд
                   </h2>
 
                   {record.asuultiinNer && (
-                    <div className="p-2 mb-3 bg-blue-50 rounded border border-blue-200">
+                    <div className="p-2 mb-3 border border-blue-200 rounded bg-blue-50">
                       <p className="text-xs font-medium text-blue-800">
                         {record.asuultiinNer}
                       </p>
                     </div>
                   )}
 
-                  <div className="overflow-y-auto space-y-2 max-h-64">
+                  <div className="space-y-2 overflow-y-auto max-h-64">
                     {record.khariultuud.map((answer, idx) => (
                       <div
                         key={idx}
-                        className="p-3 bg-gray-50 rounded border border-gray-200"
+                        className="p-3 border border-gray-200 rounded bg-gray-50"
                       >
                         <div className="mb-1 text-xs font-medium text-gray-700">
                           {answer.asuult}
@@ -355,12 +355,12 @@ export default function SetgegdelDetail() {
 
           {/* Comment Section - Full Width at Bottom */}
           <div className="mt-4">
-            <div className="p-4 bg-white rounded-lg border border-gray-200">
+            <div className="p-4 bg-white border border-gray-200 rounded-lg">
               <h2 className="flex items-center mb-3 text-base font-semibold text-gray-900">
                 <MessageOutlined className="mr-2 text-sm text-blue-500" />
                 Сэтгэгдэл
               </h2>
-              <div className="p-3 bg-gray-50 rounded-lg">
+              <div className="p-3 rounded-lg bg-gray-50">
                 <div className="text-sm leading-relaxed text-gray-800">
                   {renderHighlighted(record.tailbar)}
                 </div>

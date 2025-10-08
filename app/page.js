@@ -23,7 +23,7 @@ function Nevtrekh() {
     <div className="flex justify-center items-center bg-[url('/assets/bg-from-unsplash.jpg')] bg-cover bg-center bg-no-repeat w-screen h-screen dark:bg-gray-800 relative">
       <Head>
         <title>Нэвтрэх хуудас</title>
-        <link rel="icon" href="/assets/logo.png" />
+        <link rel="icon" href="/assets/logo.webp" />
       </Head>
       <div className="w-full sm:w-[640px] md:w-[768px] lg:w-[1024px] h-fit rounded-xl bg-blue-300 lg:flex hidden justify-center items-center">
         <div className="flex flex-col justify-end items-center w-[40%] !h-[408px] rounded-l-xl bg-[url('/assets/subBg.png')] bg-contain bg-center bg-no-repeat py-10 px-20"></div>
@@ -34,11 +34,11 @@ function Nevtrekh() {
                 <div className="flex items-center justify-center w-20 h-20 overflow-hidden">
                   <img
                     className="w-full h-full object-cover scale-[1.5]"
-                    src="/assets/logo.png"
+                    src="/assets/logo.webp"
                   />
                 </div>
                 <h2 className="uppercase font-[750] ">
-                  Тээврийн цагдаагийн алба
+                  ШҮҮХИЙН ШИЙДВЭР ГҮЙЦЭТГЭХ ЕРӨНХИЙ ГАЗАР
                 </h2>
               </div>
               <Form
@@ -113,10 +113,12 @@ function Nevtrekh() {
           <div className="flex items-center justify-center w-20 h-20 overflow-hidden">
             <img
               className="w-full h-full object-cover scale-[1.5]"
-              src="/assets/logo.png"
+              src="/assets/logo.webp"
             />
           </div>
-          <h2 className="uppercase font-[750] ">Тээврийн цагдаагийн алба</h2>
+          <h2 className="uppercase font-[750] ">
+            ШҮҮХИЙН ШИЙДВЭР ГҮЙЦЭТГЭХ ЕРӨНХИЙ ГАЗАР
+          </h2>
         </div>
         <Form
           form={form}
@@ -181,11 +183,7 @@ function Nevtrekh() {
         </div>
       </div>
       <div className="absolute left-0 right-0 flex flex-col items-center gap-2 px-4 bottom-2 sm:flex-row sm:justify-between">
-        <div className="px-4 py-2 bg-black bg-opacity-50 select-none rounded-xl">
-          <h2 className="text-sm text-center text-white sm:text-base sm:text-left">
-            {"Тээврийн цагдаагийн албаны захиалгаар бүтээв."}
-          </h2>
-        </div>
+        <div className="px-4 py-2 bg-black bg-opacity-50 select-none rounded-xl"></div>
 
         <div className="px-4 py-2 bg-black bg-opacity-50 select-none rounded-xl">
           <h2 className="text-sm text-center text-white sm:text-base sm:text-right">
