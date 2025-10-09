@@ -64,9 +64,7 @@ const useDansniiKhuulga = (token, bulgiinId, ognoo) => {
   });
 
   const { data, mutate } = useSWR(
-    token
-      ? ["bankniiGuilgee", ognoo, bulgiinId, khuudaslalt, token]
-      : null,
+    token ? ["bankniiGuilgee", ognoo, bulgiinId, khuudaslalt, token] : null,
     (url, ognoo, bulgiinId, { search, ...khuudaslalt }, token) =>
       getListMethod(url, token, {
         ...khuudaslalt,
@@ -112,7 +110,7 @@ function Dun({ token, ognoo, buleg }) {
     return idnuud;
   }, [buleg]);
 
-  const { bulegiinDun, mutate } = usebulegiinDun(
+  const { bulegiinDun, mutate } = useBulegiinDun(
     token,
 
     Idnuud,
@@ -143,7 +141,7 @@ function BulegMur({
     return idnuud;
   }, [buleg]);
 
-  const { bulegiinDun } = usebulegiinDun(token, Idnuud, ognoo);
+  const { bulegiinDun } = useBulegiinDun(token, Idnuud, ognoo);
 
   const {
     dansniiKhuulgaGaralt,
@@ -163,19 +161,19 @@ function BulegMur({
   }
 
   return (
-    <div className="w-full space-y-2">
-      <div className="flex w-full flex-row space-x-2">
+    <div className="space-y-2 w-full">
+      <div className="flex flex-row space-x-2 w-full">
         <div
-          className="box flex h-8 w-8 cursor-pointer items-center justify-center rounded-sm text-center z-10"
+          className="flex z-10 justify-center items-center w-8 h-8 text-center rounded-sm cursor-pointer box"
           onClick={() => setShowDed(!showDed)}
         >
-          {bulegbuleg.dedKhesguud ? (showDed ? "-" : "+") : ""}
+          {buleg.dedKhesguud ? (showDed ? "-" : "+") : ""}
         </div>
-        <div className="flex-1 box flex items-center rounded-sm px-2">
+        <div className="flex flex-1 items-center px-2 rounded-sm box">
           {buleg.ner}
         </div>
         <div
-          className="box flex w-80 items-center rounded-sm px-2"
+          className="flex items-center px-2 w-80 rounded-sm box"
           style={{ width: !parent && "22.5rem" }}
         >
           {formatNumber(bulegiinDun || 0)}₮
@@ -187,7 +185,7 @@ function BulegMur({
               <Menu className="p-2">
                 <Menu.Item
                   key="Заалт нэмэх"
-                  className="dark:hover:bg-dark-2 flex  items-center space-x-2 rounded-md bg-white p-2 transition duration-300 ease-in-out hover:bg-gray-200 dark:bg-gray-700"
+                  className="flex items-center p-2 space-x-2 bg-white rounded-md transition duration-300 ease-in-out dark:hover:bg-dark-2 hover:bg-gray-200 dark:bg-gray-700"
                   onClick={() => bulegUstgaya(buleg)}
                 >
                   <DeleteOutlined />
@@ -195,7 +193,7 @@ function BulegMur({
                 </Menu.Item>
                 <Menu.Item
                   key="Заалт Excel-ээс оруулах"
-                  className="dark:hover:bg-dark-2 flex items-center space-x-2 rounded-md bg-white p-2 transition duration-300 ease-in-out hover:bg-gray-200 dark:bg-gray-700"
+                  className="flex items-center p-2 space-x-2 bg-white rounded-md transition duration-300 ease-in-out dark:hover:bg-dark-2 hover:bg-gray-200 dark:bg-gray-700"
                   onClick={() => bulegBurtgekh(buleg)}
                 >
                   <EditOutlined />
@@ -206,14 +204,14 @@ function BulegMur({
             trigger="click"
             className="cursor-pointer"
           >
-            <div className="box flex w-8 rotate-90 transform cursor-pointer items-center justify-center">
+            <div className="flex justify-center items-center w-8 transform rotate-90 cursor-pointer box">
               <MoreOutlined style={{ display: "flex" }} />
             </div>
           </Dropdown>
         )}
       </div>
       {showDed && buleg.dedKhesguud && (
-        <div className="w-full pl-12">
+        <div className="pl-12 w-full">
           <Buleg
             t={t}
             buleguud={buleg.dedKhesguud}
@@ -225,23 +223,23 @@ function BulegMur({
       {showDed &&
         dansniiKhuulgaGaralt &&
         dansniiKhuulgaGaralt?.jagsaalt?.map((a) => (
-          <div className="flex w-full flex-row space-x-4 pl-12 " key={a?._id}>
-            <div className="box flex h-8 w-8 items-center justify-center rounded-sm text-center">
+          <div className="flex flex-row pl-12 space-x-4 w-full" key={a?._id}>
+            <div className="flex justify-center items-center w-8 h-8 text-center rounded-sm box">
               {index + 1}
             </div>
             <div
-              className="box flex items-center rounded-sm px-2"
+              className="flex items-center px-2 rounded-sm box"
               style={{ width: "calc(100% - 63.25rem)" }}
             >
               {a.dansniiDugaar}
             </div>
-            <div className="box flex w-80 items-center rounded-sm px-2">
+            <div className="flex items-center px-2 w-80 rounded-sm box">
               {a.CtActnName}
             </div>
-            <div className="box flex w-80 items-center rounded-sm px-2">
+            <div className="flex items-center px-2 w-80 rounded-sm box">
               {moment(a.TxDt).format("YYYY-MM-DD")}
             </div>
-            <div className="box flex w-80 items-center rounded-sm px-2">
+            <div className="flex items-center px-2 w-80 rounded-sm box">
               {formatNumber(a.Amt || 0)}₮
             </div>
             <Popconfirm
@@ -249,9 +247,9 @@ function BulegMur({
               okText={t("Тийм")}
               cancelText={t("Үгүй")}
               onConfirm={() => guilgeeUstgaya(a._id)}
-              className="h-5 w-5"
+              className="w-5 h-5"
             >
-              <div className="box flex w-8 cursor-pointer items-center justify-center">
+              <div className="flex justify-center items-center w-8 cursor-pointer box">
                 <CloseOutlined style={{ display: "flex" }} />
               </div>
             </Popconfirm>
@@ -306,7 +304,8 @@ function KholbosonBulegTable({ columns, garalt, pagination }) {
   );
 }
 
-function bulegExpander({ mur, token, ognoo, onRefresh }) {
+function BulegExpander({ mur, token, ognoo, onRefresh }) {
+  const { t } = useTranslation();
   const {
     dansniiKhuulgaGaralt,
     setDansniiKhuulgaKhuudaslalt,
@@ -332,7 +331,7 @@ function bulegExpander({ mur, token, ognoo, onRefresh }) {
 
   return (
     <div className="">
-      {mur.dedKhesguud && mur.dedKhesguud?.length > 0 && (
+      {mur.dedKhesguud && mur.dedKhesguud?.length > 0 ? (
         <div className="py-2 pl-4">
           <BulegTable
             showHeader={false}
@@ -369,6 +368,8 @@ function bulegExpander({ mur, token, ognoo, onRefresh }) {
             ognoo={ognoo}
           />
         </div>
+      ) : (
+        <div className="py-2 pl-4 text-gray-500">Дэд бүлэг байхгүй байна</div>
       )}
     </div>
   );
@@ -410,13 +411,12 @@ function BulegTable({
           ),
         expandedRowKeys: expandedKeys,
         expandedRowClassName: expandedRowClassName,
-        onExpand: (a, b) => {
-          if (true === a) expandedKeys.push(b._id);
-          else {
-            const index = expandedKeys.indexOf(b._id);
-            expandedKeys.splice(index, 1);
+        onExpand: (expanded, record) => {
+          if (expanded) {
+            setExpandedKeys((prev) => [...prev, record._id]);
+          } else {
+            setExpandedKeys((prev) => prev.filter((key) => key !== record._id));
           }
-          setExpandedKeys([...expandedKeys]);
         },
       }}
       rowKey={(row) => row._id}
@@ -457,14 +457,19 @@ function buleg({ token: serverToken, needsClientAuth }) {
       icon: <FileExcelOutlined />,
       footer,
       content: (
-        <Excel ref={excel} token={token} ajiltanMutate={bulegGaralt.mutate} bulegGaralt={bulegGaralt.jagsaalt} />
+        <Excel
+          ref={excel}
+          token={token}
+          ajiltanMutate={bulegMutate}
+          bulegGaralt={bulegGaralt.jagsaalt}
+        />
       ),
     });
   }
   if (needsClientAuth && !token) {
     return (
-      <div className="flex items-center justify-center min-h-screen">
-        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500"></div>
+      <div className="flex justify-center items-center min-h-screen">
+        <div className="w-8 h-8 rounded-full border-b-2 border-blue-500 animate-spin"></div>
         <span className="ml-2 text-gray-600">Нэвтэрч байна...</span>
       </div>
     );
@@ -487,7 +492,7 @@ function buleg({ token: serverToken, needsClientAuth }) {
       <Space>
         <Button onClick={() => bulegRef.current.khaaya()}>{t("Хаах")}</Button>
         <Button
-          className="bg-blue-500 text-white"
+          className="text-white bg-blue-500"
           onClick={() => bulegRef.current.khadgalya()}
         >
           {t("Хадгалах")}
@@ -533,8 +538,8 @@ function buleg({ token: serverToken, needsClientAuth }) {
       }
     >
       <div className="space-y-5">
-        <div className="bg-white rounded-lg shadow-sm p-6">
-          <h1 className="text-2xl font-bold text-gray-900 mb-2">
+        <div className="p-6 bg-white rounded-lg shadow-sm">
+          <h1 className="mb-2 text-2xl font-bold text-gray-900">
             {t("Бүлгийн жагсаалт")}
           </h1>
           <p className="text-gray-600">
@@ -542,8 +547,8 @@ function buleg({ token: serverToken, needsClientAuth }) {
           </p>
         </div>
 
-        <div className="bg-white rounded-lg shadow-sm p-6">
-          <div className="flex w-full flex-col md:flex-row md:items-center justify-between gap-4">
+        <div className="p-6 bg-white rounded-lg shadow-sm">
+          <div className="flex flex-col gap-4 justify-between w-full md:flex-row md:items-center">
             <div
               data-aos="fade-right"
               data-aos-duration="1000"
@@ -573,7 +578,7 @@ function buleg({ token: serverToken, needsClientAuth }) {
                 }
                 trigger={["click"]}
               >
-                <button className="flex items-center hidden justify-between w-40 h-10 px-4 py-2 bg-white border rounded-lg cursor-pointer">
+                <button className="flex hidden justify-between items-center px-4 py-2 w-40 h-10 bg-white rounded-lg border cursor-pointer">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     width="24"
@@ -584,7 +589,7 @@ function buleg({ token: serverToken, needsClientAuth }) {
                     strokeWidth="2"
                     strokeLinecap="round"
                     strokeLinejoin="round"
-                    className="w-4 h-4 mr-2"
+                    className="mr-2 w-4 h-4"
                   >
                     <path d="M14.5 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V7.5L14.5 2z"></path>
                     <polyline points="14 2 14 8 20 8"></polyline>
@@ -603,7 +608,7 @@ function buleg({ token: serverToken, needsClientAuth }) {
                     strokeWidth="2"
                     strokeLinecap="round"
                     strokeLinejoin="round"
-                    className="w-4 h-4 ml-2"
+                    className="ml-2 w-4 h-4"
                   >
                     <polyline points="6 9 12 15 18 9"></polyline>
                   </svg>
@@ -618,10 +623,10 @@ function buleg({ token: serverToken, needsClientAuth }) {
                   alignItems: "center",
                   gap: "8px",
                 }}
-                className="btn w-full md:w-auto bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-opacity-50"
+                className="px-4 py-2 w-full text-white bg-blue-500 rounded-lg transition-colors duration-200 btn md:w-auto hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-opacity-50"
                 onClick={() => bulegBurtgekh()}
               >
-                <span className="flex h-5 w-5 items-center justify-center">
+                <span className="flex justify-center items-center w-5 h-5">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     width="24"
@@ -632,7 +637,7 @@ function buleg({ token: serverToken, needsClientAuth }) {
                     strokeWidth="1.5"
                     strokeLinecap="round"
                     strokeLinejoin="round"
-                    className="feather feather-plus h-4 w-4"
+                    className="w-4 h-4 feather feather-plus"
                   >
                     <line x1="12" y1="5" x2="12" y2="19"></line>
                     <line x1="5" y1="12" x2="19" y2="12"></line>
@@ -689,7 +694,7 @@ function buleg({ token: serverToken, needsClientAuth }) {
                       content={
                         <div className="flex flex-col w-40">
                           <div
-                            className="flex items-center gap-2 px-3 py-2 rounded-lg cursor-pointer hover:bg-blue-50 dark:hover:bg-gray-700"
+                            className="flex gap-2 items-center px-3 py-2 rounded-lg cursor-pointer hover:bg-blue-50 dark:hover:bg-gray-700"
                             onClick={() => bulegBurtgekh(mur)}
                           >
                             <EditOutlined
@@ -713,7 +718,7 @@ function buleg({ token: serverToken, needsClientAuth }) {
                             }}
                             onConfirm={() => bulegUstgaya(mur)}
                           >
-                            <div className="flex items-center gap-2 px-3 py-2 rounded-lg cursor-pointer hover:bg-red-50 dark:hover:bg-gray-700">
+                            <div className="flex gap-2 items-center px-3 py-2 rounded-lg cursor-pointer hover:bg-red-50 dark:hover:bg-gray-700">
                               <DeleteOutlined
                                 style={{ fontSize: 16, color: "red" }}
                               />

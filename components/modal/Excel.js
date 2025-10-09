@@ -86,25 +86,60 @@ function Excel({ token, destroy, ajiltanMutate, bulegGaralt }, ref) {
           uilchilgee(token)
             .post("/ajiltanTatya", formData)
             .then(({ data, status }) => {
-              if (status === 200 && data === "Amjilttai") {
-                message.success("Амжилттай хадгаллаа");
-                ajiltanMutate();
-                destroy();
+              if (
+                status === 200 &&
+                (data === "Amjilttai" || (data && data.success === true))
+              ) {
+                message.destroy("excelLoader");
+                const successMessage =
+                  data && data.message ? data.message : "Амжилттай хадгаллаа";
+                const importedCount =
+                  data && data.imported
+                    ? ` (${data.imported} мөр орууллаа хийгдлээ)`
+                    : "";
+                message.success(successMessage + importedCount);
+                // Reset form state
+                setFile(null);
+                setAldaa(null);
+                // Refresh data
+                if (ajiltanMutate) {
+                  ajiltanMutate();
+                }
+                // Close modal after a short delay to show success message
+                if (destroy) {
+                  setTimeout(() => {
+                    destroy();
+                  }, 500);
+                }
+              } else {
+                message.destroy("excelLoader");
+                const errorMessage =
+                  data && data.message
+                    ? data.message
+                    : "Хадгалахад алдаа гарлаа";
+                message.error(errorMessage);
               }
             })
             .catch((e) => {
-              if (!!e?.response?.data?.aldaa)
+              message.destroy("excelLoader");
+              if (!!e?.response?.data?.aldaa) {
                 setAldaa(e?.response?.data?.aldaa);
-              else aldaaBarigch(e);
-            })
-            .finally(() => message.destroy("excelLoader"));
-        } else message.warning("Excel файл аа сонгоно уу?");
+                message.error("Excel файлд алдаа байна");
+              } else {
+                aldaaBarigch(e);
+              }
+            });
+        } else {
+          message.warning("Excel файл аа сонгоно уу?");
+        }
       },
       khaaya() {
-        destroy();
+        if (destroy) {
+          destroy();
+        }
       },
     }),
-    [file]
+    [file, token, ajiltanMutate, destroy]
   );
 
   useEffect(() => {
@@ -173,11 +208,11 @@ function Excel({ token, destroy, ajiltanMutate, bulegGaralt }, ref) {
 
       {/* File preview with improved design */}
       {!!file && (
-        <div className="bg-green-50 border border-green-200 rounded-lg p-4">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-3">
+        <div className="p-4 bg-green-50 rounded-lg border border-green-200">
+          <div className="flex justify-between items-center">
+            <div className="flex gap-3 items-center">
               <div className="p-2 bg-green-100 rounded-lg">
-                <FileExcelOutlined className="text-green-600 text-lg" />
+                <FileExcelOutlined className="text-lg text-green-600" />
               </div>
               <div>
                 <div className="font-medium text-green-800">{file?.name}</div>
@@ -200,10 +235,10 @@ function Excel({ token, destroy, ajiltanMutate, bulegGaralt }, ref) {
 
       {/* Error display */}
       {aldaa && (
-        <div className="bg-red-50 border border-red-200 rounded-lg p-4">
-          <div className="text-red-600 font-medium mb-2">Алдаа:</div>
+        <div className="p-4 bg-red-50 rounded-lg border border-red-200">
+          <div className="mb-2 font-medium text-red-600">Алдаа:</div>
           <div
-            className="max-h-52 overflow-auto text-red-600 text-sm"
+            className="overflow-auto max-h-52 text-sm text-red-600"
             dangerouslySetInnerHTML={{
               __html: aldaa,
             }}

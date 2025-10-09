@@ -1,6 +1,7 @@
 "use client";
 
 import { AuthProvider } from "@/services/auth";
+import AuthGuard from "@/components/auth/AuthGuard";
 import "@styles/globals.css";
 
 export default function RootLayout({ children }) {
@@ -16,7 +17,9 @@ export default function RootLayout({ children }) {
             <div />
           </div>
           <main>
-            <AuthProvider>{children}</AuthProvider>
+            <AuthProvider>
+              <AuthGuard>{children}</AuthGuard>
+            </AuthProvider>
           </main>
         </div>
       </body>
