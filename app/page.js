@@ -31,12 +31,12 @@ function Nevtrekh() {
         <div className="block xl:flex justify-start items-center w-[60%] bg-white p-20 rounded-r-3xl">
           <div className="flex w-full h-screen xl:h-auto">
             <div className="my-auto border-r- bg-white xl:bg-transparent px-5 sm:px-8 py-8 xl:p-0 rounded-md shadow-md xl:shadow-none !w-full sm:w-3/4 lg:w-2/4 xl:w-auto">
-              <div className="flex flex-col items-center justify-start w-full mb-10">
-                <div className="flex items-center justify-center overflow-hidden">
-                  <img className="w-20 h-24 bottom-4" src="/assets/logo.webp" />
+              <div className="flex flex-col items-center justify-start w-full mb-10 space-y-4">
+                <div className="flex items-center justify-center overflow-hidden -mt-4">
+                  <img className="w-20 h-24" src="/assets/logo.webp" />
                 </div>
-                <h2 className="uppercase font-[750] ">
-                  ШҮҮХИЙН ШИЙДВЭР ГҮЙЦЭТГЭХ ЕРӨНХИЙ ГАЗАР
+                <h2 className="uppercase  text-center font-[750] ">
+                  ШҮҮХИЙН ШИЙДВЭР ГҮЙЦЭТГЭХ <br /> ЕРӨНХИЙ ГАЗАР
                 </h2>
               </div>
               <Form
@@ -123,7 +123,7 @@ function Nevtrekh() {
             />
           </div>
           <h2 className="uppercase font-[750] text-center text-sm sm:text-base leading-tight">
-            ШҮҮХИЙН ШИЙДВЭР ГҮЙЦЭТГЭХ ЕРӨНХИЙ ГАЗАР
+            ШҮҮХИЙН ШИЙДВЭР ГҮЙЦЭТГЭХ <br /> ЕРӨНХИЙ ГАЗАР
           </h2>
         </div>
         <Form
@@ -135,9 +135,7 @@ function Nevtrekh() {
               newterya({ ...form.getFieldsValue(), namaigsana });
           }}
         >
-          <h2 className="uppercase font-[600] mb-6 text-center text-lg">
-            Нэвтрэх
-          </h2>
+         
           <Form.Item name="nevtrekhNer" className="mb-4">
             <Input
               autoComplete="off"
