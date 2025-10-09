@@ -3,7 +3,7 @@ import { useState } from "react";
 export const useAnalyticsModals = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  const [selectedZardal, setSelectedZardal] = useState(null);
+  const [selectedBuleg, setSelectedBuleg] = useState(null);
   const [selectedDepartments, setSelectedDepartments] = useState({});
   const [departmentLevels, setDepartmentLevels] = useState({});
   const [employeeDialogOpen, setEmployeeDialogOpen] = useState(false);
@@ -58,8 +58,8 @@ export const useAnalyticsModals = () => {
   return {
     isModalOpen,
     sidebarOpen,
-    selectedZardal,
-    setSelectedZardal,
+    selectedBuleg,
+    setSelectedBuleg,
     selectedDepartments,
     setSelectedDepartments,
     departmentLevels,

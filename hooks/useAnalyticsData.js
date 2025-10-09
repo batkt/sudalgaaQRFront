@@ -6,7 +6,7 @@ import useLineGraphicTailan from "@/hook/useLineGraphicTailan";
 import useChartDataAvya from "@/hook/useChartDataAvya";
 import useJagsaalt from "@/hook/useJagsaalt";
 import useMunguuJagsaalt from "@/hook/useMunguuJagsaalt";
-import useZardal from "@/hook/useZardal";
+import useBuleg from "@/hook/useBuleg";
 import uilchilgee from "@/services/uilchilgee";
 import moment from "moment";
 
@@ -25,9 +25,9 @@ const searchKeys = [
   "tailbar",
 ];
 const searchKeysAjiltan = ["ner"];
-const searchKeysZardal = ["ner"];
+const searchKeysBuleg = ["ner"];
 
-export const useAnalyticsData = () => {
+export const useAnalyticsData = (departmentFilter = null) => {
   const { token, nevtersenAjiltan } = useAuth();
   const { tulkhuurUgGaralt } = useTulkhuurUg(token);
 
@@ -64,9 +64,19 @@ export const useAnalyticsData = () => {
     ognoo
   );
 
+  // Create query with department filtering
+  const query = useMemo(() => {
+    if (!departmentFilter) return undefined;
+    
+    // Filter by department assignments - employees have departmentAssignments array
+    return {
+      "ajiltan.departmentAssignments.departmentName": departmentFilter
+    };
+  }, [departmentFilter]);
+
   const khariultGaralt = useJagsaalt(
     "/khariult",
-    undefined,
+    query,
     order,
     undefined,
     searchKeys,
@@ -75,16 +85,16 @@ export const useAnalyticsData = () => {
 
 
   const {
-    zardalGaralt,
-    setKhuudaslalt: setZardalKhuudaslalt,
-    zardalMutate,
-  } = useZardal(
+    bulegGaralt,
+    setKhuudaslalt: setBulegKhuudaslalt,
+    bulegMutate,
+  } = useBuleg(
     token,
-    "/zardal",
+    "/buleg",
     undefined,
     undefined,
     undefined,
-    searchKeysZardal,
+    searchKeysBuleg,
     50
   );
 
@@ -150,9 +160,9 @@ export const useAnalyticsData = () => {
     lineGraphicTailan,
     lineGraphicTailanMutate,
     khariultGaralt,
-    zardalGaralt,
-    setZardalKhuudaslalt,
-    zardalMutate,
+    bulegGaralt,
+    setBulegKhuudaslalt,
+    bulegMutate,
     ajiltanGaralt,
   };
 };

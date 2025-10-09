@@ -36,9 +36,9 @@ async function fetcher(
 
 var timeout = null;
 
-function useZardal(
+function useBuleg(
   token,
-  url = "zardal",
+  url = "buleg",
   query,
   order,
   select,
@@ -136,8 +136,8 @@ function useZardal(
   }, [khuudaslalt?.jagsaalt, data?.jagsaalt]);
 
   return {
-    zardalGaralt: data,
-    zardalMutate: mutate,
+    bulegGaralt: data,
+    bulegMutate: mutate,
     setKhuudaslalt,
     data,
     mutate,
@@ -151,4 +151,4 @@ function useZardal(
   };
 }
 
-export default useZardal;
+export default useBuleg;

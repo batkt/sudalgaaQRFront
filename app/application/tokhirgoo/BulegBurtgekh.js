@@ -4,12 +4,12 @@ import createMethod from "tools/functions/crud/createMethod";
 import updateMethod from "tools/functions/crud/updateMethod";
 import _ from "lodash";
 
-function ZardalMur({
-  zardal,
+function BulegMur({
+  buleg,
   dedBulegNemekh,
-  zardalNemekh,
+  bulegNemekh,
   murUstgaya,
-  onChangeZardal,
+  onChangeBuleg,
   defaultZam = "",
   index,
   realZam,
@@ -23,28 +23,28 @@ function ZardalMur({
       <div className="flex w-full flex-row space-x-4 dark:text-white">
         <div
           className={`flex h-8 w-8 cursor-pointer items-center justify-center rounded-md text-center dark:text-gray-200 ${
-            zardal.dedKhesguud ? (showDed ? "border " : "border ") : ""
+            buleg.dedKhesguud ? (showDed ? "border " : "border ") : ""
           }`}
           onClick={() => setShowDed(!showDed)}
         >
-          {zardal.dedKhesguud ? (showDed ? "-" : "+") : ""}
+          {buleg.dedKhesguud ? (showDed ? "-" : "+") : ""}
         </div>
         <div
           className="flex items-center rounded-sm px-2"
           style={{ width: `calc(100% - ${zam !== "" ? "6" : "3"}rem)` }}
         >
           <Input
-            id="zardalMurInput"
+            id="bulegMurInput"
             placeholder={t("Нэр")}
-            value={zardal.ner}
+            value={buleg.ner}
             style={{ width: "100%" }}
-            onChange={(e) => onChangeZardal(e, zam)}
+            onChange={(e) => onChangeBuleg(e, zam)}
           />
         </div>
         <div
           className="ml-5 flex h-8 w-8 cursor-pointer items-center justify-center rounded-md border text-center"
           onClick={() => {
-            if (zardal?.dedKhesguud?.length > 0) zardalNemekh(zam);
+            if (buleg?.dedKhesguud?.length > 0) bulegNemekh(zam);
             else dedBulegNemekh(zam);
           }}
         >
@@ -59,14 +59,14 @@ function ZardalMur({
           </div>
         )}
       </div>
-      {showDed && zardal.dedKhesguud && (
+      {showDed && buleg.dedKhesguud && (
         <div className="w-full pl-12">
-          <Zardal
-            zardaluud={zardal.dedKhesguud}
+          <Buleg
+            buleguud={buleg.dedKhesguud}
             dedBulegNemekh={dedBulegNemekh}
-            zardalNemekh={zardalNemekh}
+            bulegNemekh={bulegNemekh}
             murUstgaya={murUstgaya}
-            onChangeZardal={onChangeZardal}
+            onChangeBuleg={onChangeBuleg}
             zam={zam + (zam === "" ? "" : ".") + "dedKhesguud"}
             t={t}
           />
@@ -76,26 +76,26 @@ function ZardalMur({
   );
 }
 
-function Zardal({
-  zardaluud,
+function Buleg({
+  buleguud,
   dedBulegNemekh,
-  zardalNemekh,
+  bulegNemekh,
   murUstgaya,
-  onChangeZardal,
+  onChangeBuleg,
   zam,
   t,
 }) {
   return (
     <div className="w-full space-y-4">
-      {zardaluud?.map((a, i) => (
-        <ZardalMur
+      {buleguud?.map((a, i) => (
+        <BulegMur
           key={a?._id}
-          zardal={a}
+          buleg={a}
           index={i}
           dedBulegNemekh={dedBulegNemekh}
-          zardalNemekh={zardalNemekh}
+          bulegNemekh={bulegNemekh}
           murUstgaya={murUstgaya}
-          onChangeZardal={onChangeZardal}
+          onChangeBuleg={onChangeBuleg}
           realZam={zam}
           defaultZam={zam + `.${i}`}
           t={t}
@@ -105,15 +105,15 @@ function Zardal({
   );
 }
 
-function ZardalBurtgekh({ data = {}, token, destroy, onRefresh, t }, ref) {
-  const [zardal, setZardal] = useState(data);
+function BulegBurtgekh({ data = {}, token, destroy, onRefresh, t }, ref) {
+  const [buleg, setBuleg] = useState(data);
 
   useImperativeHandle(
     ref,
     () => ({
       khadgalya() {
-        const method = zardal?._id ? updateMethod : createMethod;
-        method("zardal", token, zardal).then(({ data }) => {
+        const method = buleg?._id ? updateMethod : createMethod;
+        method("buleg", token, buleg).then(({ data }) => {
           if (data === "Amjilttai") {
             message.success(t("Амжилттай хадгаллаа"));
             onRefresh && onRefresh();
@@ -125,11 +125,11 @@ function ZardalBurtgekh({ data = {}, token, destroy, onRefresh, t }, ref) {
         destroy();
       },
     }),
-    [zardal]
+    [buleg]
   );
 
   function garya() {
-    if (zardal !== data)
+    if (buleg !== data)
       Modal.confirm({
         content: t("Та хадгалахгүй гарахдаа итгэлтэй байна уу?"),
         okText: t("Тийм"),
@@ -148,51 +148,51 @@ function ZardalBurtgekh({ data = {}, token, destroy, onRefresh, t }, ref) {
     }
     document.addEventListener("keyup", keyUp);
     return () => document.removeEventListener("keyup", keyUp);
-  }, [zardal]);
+    }, [buleg]);
 
   useEffect(() => {
-    document.getElementById("zardalMurInput")?.focus();
+    document.getElementById("bulegMurInput")?.focus();
   }, []);
 
-  function onChangeZardal({ target }, zam) {
-    _.set(zardal, zam + (zam === "" ? "" : ".") + "ner", target.value);
-    setZardal({ ...zardal });
+  function onChangeBuleg({ target }, zam) {
+    _.set(buleg, zam + (zam === "" ? "" : ".") + "ner", target.value);
+    setBuleg({ ...buleg });
   }
 
   function dedBulegNemekh(zam) {
-    _.set(zardal, zam + (zam === "" ? "" : ".") + "dedKhesguud", [
+    _.set(buleg, zam + (zam === "" ? "" : ".") + "dedKhesguud", [
       { ner: t("Бүлэг") },
     ]);
-    setZardal({ ...zardal });
+    setBuleg({ ...buleg });
   }
 
   function murUstgaya(index, zam) {
-    const jagsaalt = _.get(zardal, zam);
+    const jagsaalt = _.get(buleg, zam);
     jagsaalt.splice(index, 1);
-    _.set(zardal, zam, jagsaalt);
-    setZardal({ ...zardal });
+    _.set(buleg, zam, jagsaalt);
+    setBuleg({ ...buleg });
   }
 
-  function zardalNemekh(zam) {
+  function bulegNemekh(zam) {
     const jagsaalt = _.get(
-      zardal,
-      zam + (zam === "" ? "" : ".") + "dedKhesguud"
+      buleg,
+      zam + (zam === "" ? "" : ".") + "dedKhesguud",      
     );
     jagsaalt.push({ ner: t("Бүлгүүд") });
-    _.set(zardal, zam + (zam === "" ? "" : ".") + "dedKhesguud", jagsaalt);
-    setZardal({ ...zardal });
+    _.set(buleg, zam + (zam === "" ? "" : ".") + "dedKhesguud", jagsaalt);
+    setBuleg({ ...buleg });
   }
 
   return (
-    <ZardalMur
-      zardal={zardal}
+    <BulegMur
+      buleg={buleg}
       dedBulegNemekh={dedBulegNemekh}
-      zardalNemekh={zardalNemekh}
+      bulegNemekh={bulegNemekh}
       murUstgaya={murUstgaya}
-      onChangeZardal={onChangeZardal}
+      onChangeBuleg={onChangeBuleg}
       t={t}
     />
   );
 }
 
-export default React.forwardRef(ZardalBurtgekh);
+export default React.forwardRef(BulegBurtgekh);

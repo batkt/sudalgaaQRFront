@@ -186,22 +186,52 @@ const page = () => {
     const data = khariultGaralt?.data?.jagsaalt || [];
     return {
       ajiltan: [
-        ...new Set(data.map((item) => item.ajiltan?.ner).filter(Boolean).map(name => name.trim())),
+        ...new Set(
+          data
+            .map((item) => item.ajiltan?.ner)
+            .filter(Boolean)
+            .map((name) => name.trim())
+        ),
       ].sort(),
       tsol: [
-        ...new Set(data.map((item) => item.ajiltan?.tsol).filter(Boolean).map(tsol => tsol.trim())),
+        ...new Set(
+          data
+            .map((item) => item.ajiltan?.tsol)
+            .filter(Boolean)
+            .map((tsol) => tsol.trim())
+        ),
       ].sort(),
       tasag: [
-        ...new Set(data.map((item) => item.ajiltan?.tasag).filter(Boolean).map(tasag => tasag.trim())),
+        ...new Set(
+          data
+            .map((item) => item.ajiltan?.tasag)
+            .filter(Boolean)
+            .map((tasag) => tasag.trim())
+        ),
       ].sort(),
       kheltes: [
-        ...new Set(data.map((item) => item.ajiltan?.kheltes).filter(Boolean).map(kheltes => kheltes.trim())),
+        ...new Set(
+          data
+            .map((item) => item.ajiltan?.kheltes)
+            .filter(Boolean)
+            .map((kheltes) => kheltes.trim())
+        ),
       ].sort(),
       asuultiinNer: [
-        ...new Set(data.map((item) => item.asuultiinNer).filter(Boolean).map(asuult => asuult.trim())),
+        ...new Set(
+          data
+            .map((item) => item.asuultiinNer)
+            .filter(Boolean)
+            .map((asuult) => asuult.trim())
+        ),
       ].sort(),
       turul: [
-        ...new Set(data.map((item) => item.asuultiinTurul).filter(Boolean).map(turul => turul.trim())),
+        ...new Set(
+          data
+            .map((item) => item.asuultiinTurul)
+            .filter(Boolean)
+            .map((turul) => turul.trim())
+        ),
       ].sort(),
     };
   }, [khariultGaralt?.data?.jagsaalt]);
@@ -677,113 +707,24 @@ const page = () => {
               </Select.Option>
             ))}
           </Select>
-
           <Select
-            placeholder="Цол"
-            size="small"
-            className="w-28"
-            style={{ height: "32px" }}
-            allowClear
-            showSearch
-            value={filters.tsol}
-            onChange={(value) =>
-              setFilters((prev) => ({ ...prev, tsol: value }))
-            }
-            filterOption={(input, option) =>
-              option?.children?.toLowerCase().includes(input.toLowerCase())
-            }
-          >
-            {filterOptions.tsol.map((tsol) => (
-              <Select.Option key={tsol} value={tsol}>
-                {tsol}
-              </Select.Option>
-            ))}
-          </Select>
-
-          <Select
-            placeholder="Тасаг"
-            size="small"
-            className="w-24"
-            style={{ height: "32px" }}
-            allowClear
-            showSearch
-            value={filters.tasag}
-            onChange={(value) =>
-              setFilters((prev) => ({ ...prev, tasag: value }))
-            }
-            filterOption={(input, option) =>
-              option?.children?.toLowerCase().includes(input.toLowerCase())
-            }
-          >
-            {filterOptions.tasag.map((tasag) => (
-              <Select.Option key={tasag} value={tasag}>
-                {tasag}
-              </Select.Option>
-            ))}
-          </Select>
-
-          <Select
-            placeholder="Хэлтэс"
-            size="small"
-            className="w-24"
-            style={{ height: "32px" }}
-            allowClear
-            showSearch
-            value={filters.kheltes}
-            onChange={(value) =>
-              setFilters((prev) => ({ ...prev, kheltes: value }))
-            }
-            filterOption={(input, option) =>
-              option?.children?.toLowerCase().includes(input.toLowerCase())
-            }
-          >
-            {filterOptions.kheltes.map((kheltes) => (
-              <Select.Option key={kheltes} value={kheltes}>
-                {kheltes}
-              </Select.Option>
-            ))}
-          </Select>
-
-          <Select
-            placeholder="Асуулт"
-            size="small"
-            className="w-40"
-            style={{ height: "32px" }}
-            allowClear
-            showSearch
-            value={filters.asuultiinNer}
-            onChange={(value) =>
-              setFilters((prev) => ({ ...prev, asuultiinNer: value }))
-            }
-            filterOption={(input, option) =>
-              option?.children?.toLowerCase().includes(input.toLowerCase())
-            }
-          >
-            {filterOptions.asuultiinNer.map((asuult) => (
-              <Select.Option key={asuult} value={asuult}>
-                {asuult}
-              </Select.Option>
-            ))}
-          </Select>
-
-          <Select
-            placeholder="Төрөл"
+            placeholder="Бүлэг"
             size="small"
             className="w-32"
             style={{ height: "32px" }}
             allowClear
             showSearch
-            value={filters.turul}
+            value={filters.ajiltan}
             onChange={(value) =>
-              setFilters((prev) => ({ ...prev, turul: value }))
+              setFilters((prev) => ({ ...prev, ajiltan: value }))
             }
             filterOption={(input, option) =>
               option?.children?.toLowerCase().includes(input.toLowerCase())
             }
           >
-            {filterOptions.turul.map((turul) => (
-              <Select.Option key={turul} value={turul}>
-                {turul}
+            {filterOptions.ajiltan.map((name) => (
+              <Select.Option key={name} value={name}>
+                {name}
               </Select.Option>
             ))}
           </Select>

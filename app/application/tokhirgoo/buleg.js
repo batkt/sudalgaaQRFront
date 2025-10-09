@@ -24,12 +24,12 @@ import {
   CloseCircleOutlined,
   SettingOutlined,
 } from "@ant-design/icons";
-import ZardalBurtgekh from "./ZardalBurtgekh";
+import BulegBurtgekh from "./BulegBurtgekh";
 import Excel from "@/components/modal/Excel";
 import { useAuth } from "@/services/auth";
 import { modal } from "components/ant/Modal";
 import shalgaltKhiikh from "services/shalgaltKhiikh";
-import useZardal from "@/hook/useZardal";
+import useBuleg from "@/hook/useBuleg";
 import useSWR from "swr";
 import createMethod from "tools/functions/crud/createMethod";
 
@@ -42,9 +42,9 @@ import Aos from "aos";
 import { useTranslation } from "react-i18next";
 import { t } from "i18next";
 
-const useZardaliinDun = (token, idnuud, ognoo) => {
+const useBulegiinDun = (token, idnuud, ognoo) => {
   const { data, mutate } = useSWR(
-    ["zardliinDunAvya", ognoo, idnuud],
+    ["BulegiinDunAvya", ognoo, idnuud],
     (url, ognoo, idnuud) =>
       createMethod(url, token, {
         idnuud,
@@ -53,10 +53,10 @@ const useZardaliinDun = (token, idnuud, ognoo) => {
       }).then((a) => a.data),
     { revalidateOnFocus: false }
   );
-  return { zardaliinDun: data, mutate };
+  return { bulegiinDun: data, mutate };
 };
 
-const useDansniiKhuulga = (token, zardliinBulgiinId, ognoo) => {
+const useDansniiKhuulga = (token, bulgiinId, ognoo) => {
   const [khuudaslalt, setDansniiKhuulgaKhuudaslalt] = useState({
     khuudasniiDugaar: 1,
     khuudasniiKhemjee: 100,
@@ -65,13 +65,13 @@ const useDansniiKhuulga = (token, zardliinBulgiinId, ognoo) => {
 
   const { data, mutate } = useSWR(
     token
-      ? ["bankniiGuilgee", ognoo, zardliinBulgiinId, khuudaslalt, token]
+      ? ["bankniiGuilgee", ognoo, bulgiinId, khuudaslalt, token]
       : null,
-    (url, ognoo, zardliinBulgiinId, { search, ...khuudaslalt }, token) =>
+    (url, ognoo, bulgiinId, { search, ...khuudaslalt }, token) =>
       getListMethod(url, token, {
         ...khuudaslalt,
         query: {
-          zardliinBulgiinId,
+          bulgiinId,
           $or: [
             {
               TxDt: {
@@ -99,61 +99,61 @@ const useDansniiKhuulga = (token, zardliinBulgiinId, ognoo) => {
   };
 };
 
-function pusher(list, zardal) {
-  if (!!zardal?.dedKhesguud && zardal?.dedKhesguud.length > 0)
-    zardal?.dedKhesguud.forEach((a) => pusher(list, a));
-  list.push(zardal?._id);
+function pusher(list, buleg) {
+  if (!!buleg?.dedKhesguud && buleg?.dedKhesguud.length > 0)
+    buleg?.dedKhesguud.forEach((a) => pusher(list, a));
+  list.push(buleg?._id);
 }
 
-function Dun({ token, ognoo, zardal }) {
+function Dun({ token, ognoo, buleg }) {
   const Idnuud = useMemo(() => {
     let idnuud = [];
-    pusher(idnuud, zardal);
+    pusher(idnuud, buleg);
     return idnuud;
-  }, [zardal]);
+  }, [buleg]);
 
-  const { zardaliinDun, mutate } = useZardaliinDun(
+  const { bulegiinDun, mutate } = usebulegiinDun(
     token,
 
     Idnuud,
     ognoo
   );
 
-  zardal.mutate = mutate;
+  buleg.mutate = mutate;
 
-  return <div>{formatNumber(zardaliinDun)}</div>;
+  return <div>{formatNumber(bulegiinDun)}</div>;
 }
 
-function ZardalMur({
-  zardal,
+function BulegMur({
+  buleg,
   index,
   parent,
   token,
 
   ognoo,
 
-  zardalBurtgekh,
-  zardalUstgaya,
+  bulegBurtgekh,
+  bulegUstgaya,
 }) {
   const [showDed, setShowDed] = useState(false);
 
   const Idnuud = useMemo(() => {
     let idnuud = [];
-    pusher(idnuud, zardal);
+    pusher(idnuud, buleg);
     return idnuud;
-  }, [zardal]);
+  }, [buleg]);
 
-  const { zardaliinDun } = useZardaliinDun(token, Idnuud, ognoo);
+  const { bulegiinDun } = usebulegiinDun(token, Idnuud, ognoo);
 
   const {
     dansniiKhuulgaGaralt,
     setDansniiKhuulgaKhuudaslalt,
     dansniiKhuulgaMutate,
-  } = useDansniiKhuulga(token, zardal?._id, ognoo);
+  } = useDansniiKhuulga(token, buleg?._id, ognoo);
 
   function guilgeeUstgaya(guilgeeniiId) {
     uilchilgee(token)
-      .post("/zardalTsutslaya", { guilgeeniiId })
+      .post("/bulegTsutslaya", { guilgeeniiId })
       .then(({ data }) => {
         if (data === "Amjilttai") {
           notification.success({ message: t("Амжилттай устгалаа.") });
@@ -169,16 +169,16 @@ function ZardalMur({
           className="box flex h-8 w-8 cursor-pointer items-center justify-center rounded-sm text-center z-10"
           onClick={() => setShowDed(!showDed)}
         >
-          {zardal.dedKhesguud ? (showDed ? "-" : "+") : ""}
+          {bulegbuleg.dedKhesguud ? (showDed ? "-" : "+") : ""}
         </div>
         <div className="flex-1 box flex items-center rounded-sm px-2">
-          {zardal.ner}
+          {buleg.ner}
         </div>
         <div
           className="box flex w-80 items-center rounded-sm px-2"
           style={{ width: !parent && "22.5rem" }}
         >
-          {formatNumber(zardaliinDun || 0)}₮
+          {formatNumber(bulegiinDun || 0)}₮
         </div>
         {parent && (
           <Dropdown
@@ -188,7 +188,7 @@ function ZardalMur({
                 <Menu.Item
                   key="Заалт нэмэх"
                   className="dark:hover:bg-dark-2 flex  items-center space-x-2 rounded-md bg-white p-2 transition duration-300 ease-in-out hover:bg-gray-200 dark:bg-gray-700"
-                  onClick={() => zardalUstgaya(zardal)}
+                  onClick={() => bulegUstgaya(buleg)}
                 >
                   <DeleteOutlined />
                   <span>{t("Устгах")}</span>
@@ -196,7 +196,7 @@ function ZardalMur({
                 <Menu.Item
                   key="Заалт Excel-ээс оруулах"
                   className="dark:hover:bg-dark-2 flex items-center space-x-2 rounded-md bg-white p-2 transition duration-300 ease-in-out hover:bg-gray-200 dark:bg-gray-700"
-                  onClick={() => zardalBurtgekh(zardal)}
+                  onClick={() => bulegBurtgekh(buleg)}
                 >
                   <EditOutlined />
                   <span>{t("Засах")}</span>
@@ -212,11 +212,11 @@ function ZardalMur({
           </Dropdown>
         )}
       </div>
-      {showDed && zardal.dedKhesguud && (
+      {showDed && buleg.dedKhesguud && (
         <div className="w-full pl-12">
-          <Zardal
+          <Buleg
             t={t}
-            zardaluud={zardal.dedKhesguud}
+            buleguud={buleg.dedKhesguud}
             token={token}
             ognoo={ognoo}
           />
@@ -261,37 +261,37 @@ function ZardalMur({
   );
 }
 
-function Zardal({
-  zardaluud,
+function Buleg({
+  buleguud,
   parent,
   token,
 
   ognoo,
 
-  zardalBurtgekh,
-  zardalUstgaya,
+  bulegBurtgekh,
+  bulegUstgaya,
   t,
 }) {
   return (
-    <div className={`w-full space-y-4 ${parent ? "zardalkhusnegt" : ""}`}>
-      {zardaluud?.map((a, i) => (
-        <ZardalMur
+    <div className={`w-full space-y-4 ${parent ? "bulegkhusnegt" : ""}`}>
+      {buleguud?.map((a, i) => (
+        <BulegMur
           t={t}
           key={a?._id}
-          zardal={a}
+          buleg={a}
           index={i}
           parent={parent}
           ognoo={ognoo}
           token={token}
-          zardalBurtgekh={zardalBurtgekh}
-          zardalUstgaya={zardalUstgaya}
+          bulegBurtgekh={bulegBurtgekh}
+          bulegUstgaya={bulegUstgaya}
         />
       ))}
     </div>
   );
 }
 
-function KholbosonZardalTable({ columns, garalt, pagination }) {
+function KholbosonBulegTable({ columns, garalt, pagination }) {
   return (
     <div className="py-2 pl-4">
       <Table
@@ -306,7 +306,7 @@ function KholbosonZardalTable({ columns, garalt, pagination }) {
   );
 }
 
-function ZardalExpander({ mur, token, ognoo, onRefresh }) {
+function bulegExpander({ mur, token, ognoo, onRefresh }) {
   const {
     dansniiKhuulgaGaralt,
     setDansniiKhuulgaKhuudaslalt,
@@ -315,7 +315,7 @@ function ZardalExpander({ mur, token, ognoo, onRefresh }) {
 
   function guilgeeUstgaya(guilgeeniiId) {
     uilchilgee(token)
-      .post("/zardalTsutslaya", { guilgeeniiId })
+      .post("/bulegTsutslaya", { guilgeeniiId })
       .then(({ data }) => {
         if (data === "Amjilttai") {
           notification.success({ message: t("Амжилттай устгалаа.") });
@@ -334,9 +334,9 @@ function ZardalExpander({ mur, token, ognoo, onRefresh }) {
     <div className="">
       {mur.dedKhesguud && mur.dedKhesguud?.length > 0 && (
         <div className="py-2 pl-4">
-          <ZardalTable
+          <BulegTable
             showHeader={false}
-            zardal={mur}
+            buleg={mur}
             token={token}
             onRefresh={sergeeya}
             columns={[
@@ -360,7 +360,7 @@ function ZardalExpander({ mur, token, ognoo, onRefresh }) {
               //   align: "left",
               //   width: "13rem",
               //   render(text, row) {
-              //     return <Dun token={token} zardal={row} ognoo={ognoo} />;
+              //     return <Dun token={token} buleg={row} ognoo={ognoo} />;
               //   },
               // },
             ]}
@@ -374,7 +374,7 @@ function ZardalExpander({ mur, token, ognoo, onRefresh }) {
   );
 }
 
-function ZardalTable({
+function BulegTable({
   columns,
   garalt,
   pagination,
@@ -400,7 +400,7 @@ function ZardalTable({
       expandable={{
         expandedRowRender: (mur) =>
           expandedKeys.includes(mur._id) && (
-            <ZardalExpander
+            <BulegExpander
               mur={mur}
               onRefresh={onRefresh}
               columns={columns}
@@ -425,10 +425,10 @@ function ZardalTable({
   );
 }
 
-function zardal({ token: serverToken, needsClientAuth }) {
+function buleg({ token: serverToken, needsClientAuth }) {
   const { t } = useTranslation();
   const { token } = useAuth();
-  const zardalRef = useRef(null);
+  const bulegRef = useRef(null);
   const excel = useRef(null);
   const [ognoo, setOgnoo] = useState(null);
   function excelOruulya() {
@@ -457,7 +457,7 @@ function zardal({ token: serverToken, needsClientAuth }) {
       icon: <FileExcelOutlined />,
       footer,
       content: (
-        <Excel ref={excel} token={token} zardalMutate={zardalGaralt.mutate} />
+        <Excel ref={excel} token={token} ajiltanMutate={bulegGaralt.mutate} bulegGaralt={bulegGaralt.jagsaalt} />
       ),
     });
   }
@@ -476,19 +476,19 @@ function zardal({ token: serverToken, needsClientAuth }) {
     }
   }, [token, needsClientAuth]);
 
-  const { zardalGaralt, setZardalKhuudaslalt, zardalMutate } = useZardal(token);
+  const { bulegGaralt, setBulegKhuudaslalt, bulegMutate } = useBuleg(token);
 
   function onRefresh() {
-    zardalMutate();
+    bulegMutate();
   }
 
-  function zardalBurtgekh(data) {
+  function bulegBurtgekh(data) {
     const footer = [
       <Space>
-        <Button onClick={() => zardalRef.current.khaaya()}>{t("Хаах")}</Button>
+        <Button onClick={() => bulegRef.current.khaaya()}>{t("Хаах")}</Button>
         <Button
           className="bg-blue-500 text-white"
-          onClick={() => zardalRef.current.khadgalya()}
+          onClick={() => bulegRef.current.khadgalya()}
         >
           {t("Хадгалах")}
         </Button>
@@ -499,9 +499,9 @@ function zardal({ token: serverToken, needsClientAuth }) {
       icon: <FileExcelOutlined />,
       width: 850,
       content: (
-        <ZardalBurtgekh
+        <BulegBurtgekh
           t={t}
-          ref={zardalRef}
+          ref={bulegRef}
           token={token}
           onRefresh={onRefresh}
           data={_.cloneDeep(data)}
@@ -511,8 +511,8 @@ function zardal({ token: serverToken, needsClientAuth }) {
     });
   }
 
-  function zardalUstgaya(data) {
-    deleteMethod("zardal", token, data._id)
+  function bulegUstgaya(data) {
+    deleteMethod("buleg", token, data._id)
       .then(({ data }) => {
         if (data === "Amjilttai") {
           notification.success({ message: "Амжилттай устгагдлаа" });
@@ -525,7 +525,7 @@ function zardal({ token: serverToken, needsClientAuth }) {
   return (
     <Nav
       onSearch={(search) =>
-        setZardalKhuudaslalt((a) => ({
+        setBulegKhuudaslalt((a) => ({
           ...a,
           search,
           khuudasniiDugaar: 1,
@@ -619,7 +619,7 @@ function zardal({ token: serverToken, needsClientAuth }) {
                   gap: "8px",
                 }}
                 className="btn w-full md:w-auto bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-opacity-50"
-                onClick={() => zardalBurtgekh()}
+                onClick={() => bulegBurtgekh()}
               >
                 <span className="flex h-5 w-5 items-center justify-center">
                   <svg
@@ -649,10 +649,10 @@ function zardal({ token: serverToken, needsClientAuth }) {
           data-aos="fade-left"
           data-aos-duration="1000"
         >
-          <ZardalTable
+          <BulegTable
             token={token}
             onRefresh={onRefresh}
-            garalt={zardalGaralt}
+            garalt={bulegGaralt}
             ognoo={ognoo}
             rowClassName={(record, index) =>
               index % 2 === 0
@@ -690,7 +690,7 @@ function zardal({ token: serverToken, needsClientAuth }) {
                         <div className="flex flex-col w-40">
                           <div
                             className="flex items-center gap-2 px-3 py-2 rounded-lg cursor-pointer hover:bg-blue-50 dark:hover:bg-gray-700"
-                            onClick={() => zardalBurtgekh(mur)}
+                            onClick={() => bulegBurtgekh(mur)}
                           >
                             <EditOutlined
                               style={{ fontSize: 16, color: "blue" }}
@@ -711,7 +711,7 @@ function zardal({ token: serverToken, needsClientAuth }) {
                                 border: "none",
                               },
                             }}
-                            onConfirm={() => zardalUstgaya(mur)}
+                            onConfirm={() => bulegUstgaya(mur)}
                           >
                             <div className="flex items-center gap-2 px-3 py-2 rounded-lg cursor-pointer hover:bg-red-50 dark:hover:bg-gray-700">
                               <DeleteOutlined
@@ -742,4 +742,4 @@ function zardal({ token: serverToken, needsClientAuth }) {
 
 export const getServerSideProps = shalgaltKhiikh;
 
-export default zardal;
+export default buleg;

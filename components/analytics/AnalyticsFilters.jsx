@@ -8,10 +8,10 @@ const AnalyticsFilters = memo(
   ({
     ognoo,
     onChangeOgnoo,
-    zardalGaralt,
-    selectedZardal,
-    setSelectedZardal,
-    setZardalKhuudaslalt,
+    bulegGaralt,
+    selectedBuleg,
+    setSelectedBuleg,
+    setBulegKhuudaslalt,
     ajiltanGaralt,
     selectedDepartments,
     setSelectedDepartments,
@@ -51,24 +51,24 @@ const AnalyticsFilters = memo(
                 placeholder="Бүлэг"
                 size="middle"
                 onSearch={(search) =>
-                  setZardalKhuudaslalt((v) => ({ ...v, search }))
+                  setBulegKhuudaslalt((v) => ({ ...v, search }))
                 }
                 onChange={(value) => {
-                  const selected = zardalGaralt?.jagsaalt?.find(
+                  const selected = bulegGaralt?.jagsaalt?.find(
                     (z) => z.ner === value
                   );
-                  setSelectedZardal(selected);
+                  setSelectedBuleg(selected);
                 }}
                 onClear={() => {
-                  setSelectedZardal(null);
+                  setSelectedBuleg(null);
                 }}
               >
-                {zardalGaralt?.jagsaalt?.map((zardal) => (
-                  <Select.Option key={zardal?._id} value={zardal?.ner}>
-                    {zardal?.ner}
-                    {zardal?.dedKhesguud && zardal.dedKhesguud.length > 0 && (
+                {bulegGaralt?.jagsaalt?.map((buleg) => (
+                  <Select.Option key={buleg?._id} value={buleg?.ner}>
+                    {buleg?.ner}
+                    {buleg?.dedKhesguud && buleg.dedKhesguud.length > 0 && (
                       <span className="ml-2 text-xs text-gray-400">
-                        ({zardal.dedKhesguud.length})
+                        ({buleg.dedKhesguud.length})
                       </span>
                     )}
                   </Select.Option>
@@ -77,7 +77,7 @@ const AnalyticsFilters = memo(
             </div>
 
             {/* Hierarchical Department Selection */}
-            {selectedZardal &&
+            {selectedBuleg &&
               maxLevel >= 0 &&
               Array.from({ length: maxLevel + 1 }, (_, level) => {
                 const options = getAvailableOptionsForLevel(level);

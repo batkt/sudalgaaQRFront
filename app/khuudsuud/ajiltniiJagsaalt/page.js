@@ -1,7 +1,7 @@
 "use client";
 
 import Nav from "@/components/Nav";
-import { useEffect, useMemo, useState, useRef } from "react";
+import { useEffect, useMemo, useState, useRef, useCallback } from "react";
 import {
   Table,
   Button,
@@ -38,6 +38,7 @@ import {
 import QRCode from "qrcode.react";
 import ReactToPrint, { useReactToPrint } from "react-to-print";
 import useJagsaalt from "@/hook/useJagsaalt";
+import useBuleg from "@/hook/useBuleg";
 import uilchilgee, { aldaaBarigch, url } from "@/services/uilchilgee";
 import getBase64 from "@/tools/functions/getBase64";
 import { useAuth } from "@/services/auth";
@@ -407,6 +408,17 @@ export default function ajiltniiJagsaalt() {
     tsol: null,
     tasag: null,
     kheltes: null,
+    buleg: null,
+  });
+
+  // Hierarchical department selection states
+  const [selectedBuleg, setSelectedBuleg] = useState(null);
+  const [selectedDepartments, setSelectedDepartments] = useState({});
+  const [departmentLevels, setDepartmentLevels] = useState({});
+  const [bulegKhuudaslalt, setBulegKhuudaslalt] = useState({
+    search: "",
+    khuudasniiDugaar: 1,
+    khuudasniiKhemjee: 100,
   });
 
   const query = useMemo(() => {
@@ -430,7 +442,11 @@ export default function ajiltniiJagsaalt() {
     if (filters.kheltes) {
       baseQuery.kheltes = { $regex: filters.kheltes, $options: "i" };
     }
-
+    if (filters.buleg) {
+      // Filter by department assignments - employees have departmentAssignments array
+      // Find employees who have the selected department in their assignments
+      baseQuery["departmentAssignments.departmentName"] = filters.buleg;
+    }
     return baseQuery;
   }, [filters]);
 
@@ -442,6 +458,107 @@ export default function ajiltniiJagsaalt() {
     searchKeys,
     100
   );
+
+
+  const bulegGaralt = useBuleg(
+    token,
+    "/buleg",
+    undefined,
+    undefined,
+    undefined,
+    ["ner"],
+    100
+  );
+
+  // Hierarchical department functions
+  const getDepartmentsByLevel = useCallback((dedKhesguud, level = 0) => {
+    const levels = {};
+
+    function traverse(items, currentLevel, parentPath = []) {
+      if (!levels[currentLevel]) levels[currentLevel] = [];
+
+      items.forEach((item) => {
+        const itemWithPath = {
+          ...item,
+          level: currentLevel,
+          parentPath: [...parentPath],
+          fullPath: [...parentPath, item.ner].join(" / "),
+        };
+
+        levels[currentLevel].push(itemWithPath);
+
+        if (item.dedKhesguud && item.dedKhesguud.length > 0) {
+          traverse(item.dedKhesguud, currentLevel + 1, [
+            ...parentPath,
+            item.ner,
+          ]);
+        }
+      });
+    }
+
+    traverse(dedKhesguud, level);
+    return levels;
+  }, []);
+
+  const getAvailableOptionsForLevel = useCallback(
+    (level) => {
+      if (level === 0) {
+        return selectedBuleg?.dedKhesguud || [];
+      }
+
+      const parentSelection = selectedDepartments[level - 1];
+      if (!parentSelection) return [];
+
+      const parentDept = departmentLevels[level - 1]?.find(
+        (dept) => dept.ner === parentSelection
+      );
+      return parentDept?.dedKhesguud || [];
+    },
+    [selectedBuleg, selectedDepartments, departmentLevels]
+  );
+
+  const handleDepartmentSelect = useCallback(
+    (level, value) => {
+      const newSelections = { ...selectedDepartments };
+      newSelections[level] = value;
+
+      // Clear all selections after this level
+      for (let i = level + 1; i < 10; i++) {
+        delete newSelections[i];
+      }
+
+      setSelectedDepartments(newSelections);
+
+      // Update employee filter based on the selected department path
+      const departmentPath = [];
+      for (let i = 0; i <= level; i++) {
+        if (newSelections[i]) {
+          departmentPath.push(newSelections[i]);
+        }
+      }
+
+      if (departmentPath.length > 0) {
+        // Use the last selected department name for filtering
+        const lastDepartment = departmentPath[departmentPath.length - 1];
+        setFilters((prev) => ({
+          ...prev,
+          buleg: lastDepartment,
+        }));
+      } else {
+        setFilters((prev) => ({
+          ...prev,
+          buleg: null,
+        }));
+      }
+    },
+    [selectedDepartments]
+  );
+
+  const maxLevel = useMemo(() => {
+    if (!departmentLevels || Object.keys(departmentLevels).length === 0)
+      return -1;
+    return Math.max(...Object.keys(departmentLevels).map(Number));
+  }, [departmentLevels]);
 
   const filterOptions = useMemo(() => {
     const data = ajiltanGaralt?.data?.jagsaalt || [];
@@ -494,8 +611,25 @@ export default function ajiltniiJagsaalt() {
             .map((kheltes) => kheltes.trim())
         ),
       ].sort(),
+      buleg:
+        bulegGaralt?.jagsaalt?.map((buleg) => ({
+          value: buleg._id,
+          label: buleg.ner,
+        })) || [],
     };
-  }, [ajiltanGaralt?.data?.jagsaalt]);
+  }, [ajiltanGaralt?.data?.jagsaalt, bulegGaralt?.jagsaalt]);
+
+  // Update department levels when selectedBuleg changes
+  useEffect(() => {
+    if (selectedBuleg && selectedBuleg.dedKhesguud) {
+      const levels = getDepartmentsByLevel(selectedBuleg.dedKhesguud);
+      setDepartmentLevels(levels);
+      setSelectedDepartments({});
+    } else {
+      setDepartmentLevels({});
+      setSelectedDepartments({});
+    }
+  }, [selectedBuleg, getDepartmentsByLevel]);
 
   useEffect(() => {
     const checkScreenSize = () => {
@@ -637,27 +771,45 @@ export default function ajiltniiJagsaalt() {
         ellipsis: true,
       },
     ];
+
+    // Add separate department columns when filtering by department
+    if (filters.buleg) {
+      // Get all unique department levels from the data
+      const allEmployees = ajiltanGaralt?.data?.jagsaalt || [];
+      const maxDepartmentLevel = Math.max(
+        ...allEmployees
+          .map(emp => emp.departmentAssignments || [])
+          .flat()
+          .map(dept => dept.level || 0),
+        -1
+      );
+
+      // Create separate columns for each department level
+      for (let level = 0; level <= maxDepartmentLevel; level++) {
+        data.push({
+          title: <div className="text-center">{`${level + 1}-р түвшин`}</div>,
+          key: `department_${level}`,
+          dataIndex: "departmentAssignments",
+          ellipsis: true,
+          width: "6rem",
+          render: (departmentAssignments) => {
+            if (!departmentAssignments || departmentAssignments.length === 0) {
+              return <span className="text-gray-400">-</span>;
+            }
+
+            // Find department assignment for this level
+            const deptForLevel = departmentAssignments.find(dept => dept.level === level);
+            
+            if (!deptForLevel) {
+              return <span className="text-gray-400">-</span>;
+            }
+
+            return <div className="text-xs">{deptForLevel.departmentName}</div>;
+          },
+        });
+      }
+    }
     var tasalsanBagana = [
-      {
-        title: <div className="text-center">Цол</div>,
-        dataIndex: "tsol",
-        key: "tsol",
-        ellipsis: true,
-      },
-      {
-        title: <div className="text-center">Тасаг</div>,
-        width: "6 rem",
-        dataIndex: "tasag",
-        key: "tasag",
-        ellipsis: true,
-      },
-      {
-        title: <div className="text-center">Хэлтэс</div>,
-        width: "6 rem",
-        dataIndex: "kheltes",
-        key: "kheltes",
-        ellipsis: true,
-      },
       {
         title: <SettingOutlined />,
         key: "qrKharakh",
@@ -780,7 +932,13 @@ export default function ajiltniiJagsaalt() {
       });
     }
     return data;
-  }, [token, ajiltanGaralt, nevtersenAjiltanErkh, selectedRowKeys]);
+  }, [
+    token,
+    ajiltanGaralt,
+    nevtersenAjiltanErkh,
+    selectedRowKeys,
+    filters.buleg,
+  ]);
 
   function excelOruulya() {
     const footer = [
@@ -808,7 +966,12 @@ export default function ajiltniiJagsaalt() {
       icon: <FileExcelOutlined />,
       footer,
       content: (
-        <Excel ref={excel} token={token} ajiltanMutate={ajiltanGaralt.mutate} />
+        <Excel
+          ref={excel}
+          token={token}
+          ajiltanMutate={ajiltanGaralt.mutate}
+          bulegGaralt={bulegGaralt.jagsaalt}
+        />
       ),
     });
   }
@@ -884,7 +1047,6 @@ export default function ajiltniiJagsaalt() {
           );
           setSelectedRowKeys([]);
           setSelectedRecords([]);
-          // Refresh the data
           ajiltanGaralt.refresh();
         } catch (error) {
           message.error("Устгахад алдаа гарлаа");
@@ -926,122 +1088,114 @@ export default function ajiltniiJagsaalt() {
               </Select.Option>
             ))}
           </Select>
+          {/* Department Selection */}
+          <div className="flex items-center gap-2">
+            <Select
+              showSearch
+              className="w-32"
+              allowClear
+              placeholder="Бүлэг"
+              size="small"
+              style={{ height: "32px" }}
+              onSearch={(search) =>
+                setBulegKhuudaslalt((v) => ({ ...v, search }))
+              }
+              onChange={(value) => {
+                const selected = bulegGaralt?.jagsaalt?.find(
+                  (z) => z.ner === value
+                );
+                setSelectedBuleg(selected);
 
-          <Select
-            placeholder="Албан тушаал"
-            size="small"
-            className="w-32"
-            style={{ height: "32px" }}
-            allowClear
-            showSearch
-            value={filters.albanTushaal}
-            onChange={(value) =>
-              setFilters((prev) => ({ ...prev, albanTushaal: value }))
-            }
-            filterOption={(input, option) =>
-              option?.children?.toLowerCase().includes(input.toLowerCase())
-            }
-          >
-            {filterOptions.albanTushaal.map((tushaal) => (
-              <Select.Option key={tushaal} value={tushaal}>
-                {tushaal}
-              </Select.Option>
-            ))}
-          </Select>
+                // Also filter employees by the selected parent department
+                if (selected) {
+                  setFilters((prev) => ({
+                    ...prev,
+                    buleg: selected.ner,
+                  }));
+                } else {
+                  setFilters((prev) => ({
+                    ...prev,
+                    buleg: null,
+                  }));
+                }
+              }}
+              onClear={() => {
+                setSelectedBuleg(null);
+                setFilters((prev) => ({ ...prev, buleg: null }));
+              }}
+            >
+              {bulegGaralt?.jagsaalt?.map((buleg) => (
+                <Select.Option key={buleg?._id} value={buleg?.ner}>
+                  {buleg?.ner}
+                  {buleg?.dedKhesguud && buleg.dedKhesguud.length > 0 && (
+                    <span className="ml-2 text-xs text-gray-400">
+                      ({buleg.dedKhesguud.length})
+                    </span>
+                  )}
+                </Select.Option>
+              ))}
+            </Select>
 
-          <Select
-            placeholder="Дүүрэг"
-            size="small"
-            className="w-28"
-            style={{ height: "32px" }}
-            allowClear
-            showSearch
-            value={filters.duureg}
-            onChange={(value) =>
-              setFilters((prev) => ({ ...prev, duureg: value }))
-            }
-            filterOption={(input, option) =>
-              option?.children?.toLowerCase().includes(input.toLowerCase())
-            }
-          >
-            {filterOptions.duureg.map((duureg) => (
-              <Select.Option key={duureg} value={duureg}>
-                {duureg}
-              </Select.Option>
-            ))}
-          </Select>
+            {/* Hierarchical Department Selection */}
+            {selectedBuleg &&
+              maxLevel >= 0 &&
+              Array.from({ length: maxLevel + 1 }, (_, level) => {
+                const options = getAvailableOptionsForLevel(level);
+                const hasParentSelected =
+                  level === 0 || selectedDepartments[level - 1];
 
-          <Select
-            placeholder="Цол"
-            size="small"
-            className="w-28"
-            style={{ height: "32px" }}
-            allowClear
-            showSearch
-            value={filters.tsol}
-            onChange={(value) =>
-              setFilters((prev) => ({ ...prev, tsol: value }))
-            }
-            filterOption={(input, option) =>
-              option?.children?.toLowerCase().includes(input.toLowerCase())
-            }
-          >
-            {filterOptions.tsol.map((tsol) => (
-              <Select.Option key={tsol} value={tsol}>
-                {tsol}
-              </Select.Option>
-            ))}
-          </Select>
+                if (!hasParentSelected && level > 0) return null;
 
-          <Select
-            placeholder="Тасаг"
-            size="small"
-            className="w-24"
-            style={{ height: "32px" }}
-            allowClear
-            showSearch
-            value={filters.tasag}
-            onChange={(value) =>
-              setFilters((prev) => ({ ...prev, tasag: value }))
-            }
-            filterOption={(input, option) =>
-              option?.children?.toLowerCase().includes(input.toLowerCase())
-            }
-          >
-            {filterOptions.tasag.map((tasag) => (
-              <Select.Option key={tasag} value={tasag}>
-                {tasag}
-              </Select.Option>
-            ))}
-          </Select>
+                const levelNames = [
+                  "Үндсэн дэд бүлэг",
+                  "Дэд дэд бүлэг",
+                  "3-р түвшин",
+                  "4-р түвшин",
+                  "5-р түвшин",
+                ];
+                const placeholder =
+                  levelNames[level] || `${level + 1}-р түвшин`;
 
-          <Select
-            placeholder="Хэлтэс"
-            size="small"
-            className="w-24"
-            style={{ height: "32px" }}
-            allowClear
-            showSearch
-            value={filters.kheltes}
-            onChange={(value) =>
-              setFilters((prev) => ({ ...prev, kheltes: value }))
-            }
-            filterOption={(input, option) =>
-              option?.children?.toLowerCase().includes(input.toLowerCase())
-            }
-          >
-            {filterOptions.kheltes.map((kheltes) => (
-              <Select.Option key={kheltes} value={kheltes}>
-                {kheltes}
-              </Select.Option>
-            ))}
-          </Select>
-
+                return (
+                  <Select
+                    key={level}
+                    showSearch
+                    className="w-32"
+                    allowClear
+                    placeholder={placeholder}
+                    size="small"
+                    style={{ height: "32px" }}
+                    value={selectedDepartments[level]}
+                    onChange={(value) => handleDepartmentSelect(level, value)}
+                    onClear={() => {
+                      const newSelections = {};
+                      for (let i = 0; i < level; i++) {
+                        newSelections[i] = selectedDepartments[i];
+                      }
+                      setSelectedDepartments(newSelections);
+                      setFilters((prev) => ({ ...prev, buleg: null }));
+                    }}
+                    disabled={!hasParentSelected}
+                  >
+                    {options.map((dept) => (
+                      <Select.Option key={dept._id} value={dept.ner}>
+                        {dept.ner}
+                        {dept.dedKhesguud && dept.dedKhesguud.length > 0 && (
+                          <span className="ml-2 text-xs text-gray-400">
+                            ({dept.dedKhesguud.length})
+                          </span>
+                        )}
+                      </Select.Option>
+                    ))}
+                  </Select>
+                );
+              })}
+          </div>
           <Button
             size="small"
             style={{ height: "32px" }}
             className="px-3 text-gray-600 border-gray-300 hover:border-gray-400 hover:text-gray-700"
-            onClick={() =>
+            onClick={() => {
               setFilters({
                 ner: null,
                 albanTushaal: null,
@@ -1049,8 +1203,11 @@ export default function ajiltniiJagsaalt() {
                 tsol: null,
                 tasag: null,
                 kheltes: null,
-              })
-            }
+                buleg: null,
+              });
+              setSelectedBuleg(null);
+              setSelectedDepartments({});
+            }}
           >
             Цэвэрлэх
           </Button>
@@ -1108,20 +1265,6 @@ export default function ajiltniiJagsaalt() {
                 setShineBagana={setShineBagana}
                 className="flex items-center justify-between w-40 h-10 px-4 py-2 text-sm"
                 columns={[
-                  {
-                    title: <div className="text-center">Албан тушаал</div>,
-                    width: "8rem",
-                    dataIndex: "albanTushaal",
-                    key: "albanTushaal",
-                    ellipsis: true,
-                  },
-                  {
-                    title: <div className="text-center">Дүүрэг</div>,
-                    dataIndex: "duureg",
-                    width: "6rem",
-                    key: "duureg",
-                    ellipsis: true,
-                  },
                   {
                     title: <div className="text-center">Нэр дуудлага</div>,
                     dataIndex: "porool",

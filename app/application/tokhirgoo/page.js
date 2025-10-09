@@ -1,5 +1,5 @@
-import Zardal from "./zardal";
+import Buleg from "./buleg";
 
 export default function Page() {
-  return <Zardal />;
+  return <Buleg />;
 }

@@ -34,14 +34,6 @@ const Analytic = () => {
   const analyticsData = useAnalyticsData();
   const modals = useAnalyticsModals();
   const { msgTokhirgoo: onooTokhirgoo } = useTokhirgoo(analyticsData.token, "onooTokhirgoo");
-  const processing = useAnalyticsProcessing(
-    analyticsData.khariultGaralt,
-    analyticsData.tulkhuurUgGaralt,
-    analyticsData.apiChartData,
-    analyticsData.token,
-    analyticsData.dateRange,
-    onooTokhirgoo
-  );
 
   // Socket connection for real-time updates
   useEffect(() => {
@@ -83,17 +75,17 @@ const Analytic = () => {
     return levels;
   }, []);
 
-  // Update department levels when selectedZardal changes
+  // Update department levels when selectedBuleg changes
   useEffect(() => {
-    if (modals.selectedZardal && modals.selectedZardal.dedKhesguud) {
-      const levels = getDepartmentsByLevel(modals.selectedZardal.dedKhesguud);
+    if (modals.selectedBuleg && modals.selectedBuleg.dedKhesguud) {
+      const levels = getDepartmentsByLevel(modals.selectedBuleg.dedKhesguud);
       modals.setDepartmentLevels(levels);
       modals.setSelectedDepartments({});
     } else {
       modals.setDepartmentLevels({});
       modals.setSelectedDepartments({});
     }
-  }, [modals.selectedZardal, getDepartmentsByLevel]);
+  }, [modals.selectedBuleg, getDepartmentsByLevel]);
 
   // Function to handle department selection at any level
   const handleDepartmentSelect = useCallback(
@@ -171,14 +163,88 @@ const Analytic = () => {
     ...Object.keys(modals.departmentLevels).map(Number),
     -1
   );
+
+  // Get the selected department path for filtering
+  const selectedDepartmentPath = useMemo(() => {
+    if (!modals.selectedBuleg) return null;
+    
+    const path = [];
+    for (let i = 0; i <= maxLevel; i++) {
+      if (modals.selectedDepartments[i]) {
+        const levelOptions = modals.departmentLevels[i] || [];
+        const selected = levelOptions.find(
+          (opt) => opt.ner === modals.selectedDepartments[i]
+        );
+        if (selected) {
+          path.push(selected.ner);
+        }
+      }
+    }
+    
+    return path.length > 0 ? path.join(" / ") : modals.selectedBuleg.ner;
+  }, [modals.selectedBuleg, modals.selectedDepartments, modals.departmentLevels, maxLevel]);
+
+  // Create filtered analytics data based on department selection
+  const filteredAnalyticsData = useMemo(() => {
+    if (!selectedDepartmentPath) return analyticsData;
+    
+    // Filter the data based on department
+    const filteredKhariultGaralt = {
+      ...analyticsData.khariultGaralt,
+      jagsaalt: (analyticsData.khariultGaralt?.jagsaalt || []).filter(item => {
+        if (!item.ajiltan?.departmentAssignments) return false;
+        return item.ajiltan.departmentAssignments.some(dept => 
+          dept.departmentName === selectedDepartmentPath
+        );
+      })
+    };
+
+    // Also filter the API chart data for employee-specific data
+    const filteredApiChartData = {
+      ...analyticsData.apiChartData,
+      ajiltanSanal: (analyticsData.apiChartData?.ajiltanSanal || []).filter(emp => {
+        if (!emp.departmentAssignments) return false;
+        return emp.departmentAssignments.some(dept => 
+          dept.departmentName === selectedDepartmentPath
+        );
+      }),
+      ajiltanSanalHighest: (analyticsData.apiChartData?.ajiltanSanalHighest || []).filter(emp => {
+        if (!emp.departmentAssignments) return false;
+        return emp.departmentAssignments.some(dept => 
+          dept.departmentName === selectedDepartmentPath
+        );
+      })
+    };
+
+    console.log("Department filter:", selectedDepartmentPath);
+    console.log("Filtered surveys:", filteredKhariultGaralt.jagsaalt.length);
+    console.log("Filtered employees (least):", filteredApiChartData.ajiltanSanal.length);
+    console.log("Filtered employees (most):", filteredApiChartData.ajiltanSanalHighest.length);
+
+    return {
+      ...analyticsData,
+      khariultGaralt: filteredKhariultGaralt,
+      apiChartData: filteredApiChartData
+    };
+  }, [analyticsData, selectedDepartmentPath]);
+
+  const processing = useAnalyticsProcessing(
+    filteredAnalyticsData.khariultGaralt,
+    analyticsData.tulkhuurUgGaralt,
+    filteredAnalyticsData.apiChartData,
+    analyticsData.token,
+    analyticsData.dateRange,
+    onooTokhirgoo
+  );
+
   const totalEmployees = analyticsData.ajiltanGaralt?.niitToo || 1;
 
   const leastSuggestionsCount = processing.getFilteredDataByMainDateRange(
-    analyticsData.apiChartData.ajiltanSanal || []
+    filteredAnalyticsData.apiChartData.ajiltanSanal || []
   ).length;
 
   const mostSuggestionsCount = processing.getFilteredDataByMainDateRange(
-    analyticsData.apiChartData.ajiltanSanalHighest || []
+    filteredAnalyticsData.apiChartData.ajiltanSanalHighest || []
   ).length;
   const attentionNeededWordCount = processing.progressData.negativeWordCount;
   const totalSurveysInSystem = processing.progressData.totalSurveysCount || 1;
@@ -247,10 +313,10 @@ const Analytic = () => {
             <AnalyticsFilters
               ognoo={analyticsData.ognoo}
               onChangeOgnoo={analyticsData.onChangeOgnoo}
-              zardalGaralt={analyticsData.zardalGaralt}
-              selectedZardal={modals.selectedZardal}
-              setSelectedZardal={modals.setSelectedZardal}
-              setZardalKhuudaslalt={analyticsData.setZardalKhuudaslalt}
+              bulegGaralt={analyticsData.bulegGaralt}
+              selectedBuleg={modals.selectedBuleg}
+              setSelectedBuleg={modals.setSelectedBuleg}
+              setBulegKhuudaslalt={analyticsData.setBulegKhuudaslalt}
               ajiltanGaralt={analyticsData.ajiltanGaralt}
               selectedDepartments={modals.selectedDepartments}
               setSelectedDepartments={modals.setSelectedDepartments}
@@ -315,7 +381,7 @@ const Analytic = () => {
                 lineGraphicTailan={analyticsData.lineGraphicTailan}
                 graphicTailan={analyticsData.graphicTailan}
                 selectedOption={analyticsData.selectedOption}
-                rawSurveyData={processing.getFilteredDataByMainDateRange(analyticsData.khariultGaralt?.jagsaalt || [])}
+                rawSurveyData={processing.getFilteredDataByMainDateRange(filteredAnalyticsData.khariultGaralt?.jagsaalt || [])}
                 dateRange={analyticsData.dateRange}
               />
 
@@ -342,7 +408,7 @@ const Analytic = () => {
           toggleSidebar={modals.toggleSidebar}
           commentFilter={processing.commentFilter}
           setCommentFilter={processing.setCommentFilter}
-          khariultGaralt={analyticsData.khariultGaralt}
+          khariultGaralt={filteredAnalyticsData.khariultGaralt}
           filteredRecentComments={processing.filteredRecentComments}
           renderHighlighted={processing.renderHighlighted}
           renderCommentWithScore={processing.renderCommentWithScore}
