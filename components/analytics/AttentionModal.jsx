@@ -22,13 +22,13 @@ const AttentionModal = memo(
     return (
       <Modal
         title={
-          <div className="flex items-center justify-between w-full py-1 px-2">
+          <div className="flex items-center justify-between w-full px-2 py-1">
             <span className="text-lg font-semibold text-gray-800">
               Анхаарах шаардлагатай сэтгэгдлүүд
             </span>
             <button
               onClick={handleAttentionModalCancel}
-              className="flex items-center justify-center w-8 h-8 text-gray-500 hover:text-gray-700 text-xl font-bold"
+              className="flex items-center justify-center w-8 h-8 text-xl font-bold text-gray-500 hover:text-gray-700"
             >
               ×
             </button>
@@ -37,7 +37,7 @@ const AttentionModal = memo(
         open={attentionModalOpen}
         closable={false}
         footer={
-          <div className="flex justify-end p-4 border-t border-gray-200 bg-white sticky bottom-0 z-10">
+          <div className="sticky bottom-0 z-10 flex justify-end p-4 bg-white border-t border-gray-200">
             <button
               onClick={handleAttentionModalCancel}
               className="px-6 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
@@ -65,9 +65,9 @@ const AttentionModal = memo(
       >
         <div className="bg-white rounded-lg">
           {attentionComments.length === 0 ? (
-            <div className="flex justify-center items-center p-8">
+            <div className="flex items-center justify-center p-8">
               <div className="text-center">
-                <div className="mx-auto mb-4 w-8 h-8 rounded-full border-b-2 border-blue-500 animate-spin"></div>
+                <div className="w-8 h-8 mx-auto mb-4 border-b-2 border-blue-500 rounded-full animate-spin"></div>
                 <p className="text-gray-600">Сэтгэгдлүүд ачаалж байна...</p>
               </div>
             </div>
@@ -94,21 +94,21 @@ const AttentionModal = memo(
                   columns={[
                     {
                       title: (
-                        <span className="font-semibold text-gray-700 text-center">
+                        <span className="font-semibold text-center text-gray-700">
                           №
                         </span>
                       ),
                       key: "index",
                       width: 50,
                       render: (_, __, index) => (
-                        <div className="flex justify-center items-center w-8 h-8 text-sm font-medium text-black">
+                        <div className="flex items-center justify-center w-8 h-8 text-sm font-medium text-black">
                           {(currentPage - 1) * 20 + index + 1}
                         </div>
                       ),
                     },
                     {
                       title: (
-                        <span className="font-semibold text-gray-700 text-center">
+                        <span className="font-semibold text-center text-gray-700">
                           Иргэн
                         </span>
                       ),
@@ -122,7 +122,7 @@ const AttentionModal = memo(
                     },
                     {
                       title: (
-                        <span className="font-semibold text-gray-700 text-center">
+                        <span className="font-semibold text-center text-gray-700">
                           Ажилтан
                         </span>
                       ),
@@ -142,7 +142,7 @@ const AttentionModal = memo(
                     },
                     {
                       title: (
-                        <span className="font-semibold text-gray-700 text-center">
+                        <span className="font-semibold text-center text-gray-700">
                           Албан тушаал
                         </span>
                       ),
@@ -157,7 +157,7 @@ const AttentionModal = memo(
                     },
                     {
                       title: (
-                        <span className="font-semibold text-gray-700 text-center">
+                        <span className="font-semibold text-center text-gray-700">
                           Тасаг/Хэлтэс
                         </span>
                       ),
@@ -178,7 +178,7 @@ const AttentionModal = memo(
                     },
                     {
                       title: (
-                        <span className="font-semibold text-gray-700 text-center">
+                        <span className="font-semibold text-center text-gray-700">
                           Судалгааны төрөл
                         </span>
                       ),
@@ -186,7 +186,7 @@ const AttentionModal = memo(
                       width: 100,
                       render: (_, record) => (
                         <div className="text-xs text-gray-600">
-                          <div className="p-1 text-center bg-blue-50 rounded">
+                          <div className="p-1 text-center rounded bg-blue-50">
                             {record.asuultiinNer || "-"}
                           </div>
                         </div>
@@ -194,7 +194,7 @@ const AttentionModal = memo(
                     },
                     {
                       title: (
-                        <span className="font-semibold text-gray-700 text-center">
+                        <span className="font-semibold text-center text-gray-700">
                           Сэтгэгдэл
                         </span>
                       ),
@@ -203,7 +203,7 @@ const AttentionModal = memo(
                       render: (_, record) => (
                         <div className="text-sm text-gray-600">
                           {record.tailbar ? (
-                            <div className="p-2 bg-yellow-50 rounded border-l-4 border-yellow-400 break-words">
+                            <div className="p-2 break-words border-l-4 border-yellow-400 rounded bg-yellow-50">
                               {renderHighlighted(record.tailbar)}
                             </div>
                           ) : (
@@ -216,7 +216,7 @@ const AttentionModal = memo(
                     },
                     {
                       title: (
-                        <span className="font-semibold text-gray-700 text-center">
+                        <span className="font-semibold text-center text-gray-700">
                           Огноо
                         </span>
                       ),
@@ -230,7 +230,7 @@ const AttentionModal = memo(
                     },
                     {
                       title: (
-                        <span className="font-semibold text-gray-700 text-center">
+                        <span className="font-semibold text-center text-gray-700">
                           Үйлдэл
                         </span>
                       ),
@@ -241,11 +241,11 @@ const AttentionModal = memo(
                           onClick={(e) => {
                             e.stopPropagation();
                             window.open(
-                              `https://sudalgaa.zevtabs.mn/setgegdel/${record._id}`,
+                              `https://qr.zevtabs.mn/setgegdel/${record._id}`,
                               "_blank"
                             );
                           }}
-                          className="px-3 py-1 text-xs text-white bg-blue-500 rounded transition-colors hover:bg-blue-600"
+                          className="px-3 py-1 text-xs text-white transition-colors bg-blue-500 rounded hover:bg-blue-600"
                         >
                           Дэлгэрэнгүй
                         </button>
@@ -264,9 +264,9 @@ const AttentionModal = memo(
                     (comment, index) => (
                       <div
                         key={comment._id}
-                        className="p-4 bg-white rounded-lg border border-gray-200 shadow-sm"
+                        className="p-4 bg-white border border-gray-200 rounded-lg shadow-sm"
                       >
-                        <div className="flex justify-between items-start mb-2">
+                        <div className="flex items-start justify-between mb-2">
                           <span className="text-sm font-medium text-gray-500">
                             #{index + 1}
                           </span>
@@ -274,7 +274,7 @@ const AttentionModal = memo(
                             onClick={(e) => {
                               e.stopPropagation();
                               window.open(
-                                `https://sudalgaa.zevtabs.mn/setgegdel/${comment._id}`,
+                                `https://qr.zevtabs.mn/setgegdel/${comment._id}`,
                                 "_blank"
                               );
                             }}
@@ -339,7 +339,7 @@ const AttentionModal = memo(
                             <span className="text-xs font-medium text-gray-600">
                               Сэтгэгдэл:
                             </span>
-                            <div className="p-2 mt-1 text-sm text-gray-800 bg-yellow-50 rounded border-l-4 border-yellow-400 break-words">
+                            <div className="p-2 mt-1 text-sm text-gray-800 break-words border-l-4 border-yellow-400 rounded bg-yellow-50">
                               {comment.tailbar || "Сэтгэгдэл байхгүй"}
                             </div>
                           </div>

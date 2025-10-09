@@ -24,7 +24,6 @@ const searchKeys = [
   "utas",
   "tailbar",
 ];
-const searchKeysTasag = ["ner"];
 const searchKeysAjiltan = ["ner"];
 const searchKeysZardal = ["ner"];
 
@@ -74,14 +73,6 @@ export const useAnalyticsData = () => {
     5000
   );
 
-  const tasagGaralt = useMunguuJagsaalt(
-    "/tasag",
-    undefined,
-    undefined,
-    undefined,
-    searchKeysTasag,
-    100
-  );
 
   const {
     zardalGaralt,
@@ -159,7 +150,6 @@ export const useAnalyticsData = () => {
     lineGraphicTailan,
     lineGraphicTailanMutate,
     khariultGaralt,
-    tasagGaralt,
     zardalGaralt,
     setZardalKhuudaslalt,
     zardalMutate,

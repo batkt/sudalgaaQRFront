@@ -42,7 +42,7 @@ const page = () => {
         <div className="flex items-center justify-center">
           <QRCode
             // value="http://feedback.transportation.police.gov.mn/anket/646b56afc5ae265a7e4611ca/646cc4460744bece6baf087a"
-            value="http://sudalgaa.zevtabs.mn/anket/646b56afc5ae265a7e4611ca/646cc4460744bece6baf087a"
+            value="http://qr.zevtabs.mn/anket/646b56afc5ae265a7e4611ca/646cc4460744bece6baf087a"
             renderAs="svg"
             level="H"
             size={200}

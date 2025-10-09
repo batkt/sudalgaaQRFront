@@ -8,7 +8,6 @@ const AnalyticsFilters = memo(
   ({
     ognoo,
     onChangeOgnoo,
-    tasagGaralt,
     zardalGaralt,
     selectedZardal,
     setSelectedZardal,
@@ -43,24 +42,6 @@ const AnalyticsFilters = memo(
 
           <div className="grid w-full grid-cols-2 gap-2 lg:contents">
 
-            <div className="lg:min-w-fit lg:w-auto">
-              <Select
-                showSearch
-                className="w-full lg:min-w-fit"
-                allowClear
-                placeholder="Тасаг"
-                size="middle"
-                onSearch={(search) =>
-                  tasagGaralt.setKhuudaslalt((v) => ({ ...v, search }))
-                }
-              >
-                {tasagGaralt?.jagsaalt?.map((a) => (
-                  <Select.Option key={a?._id} value={a?.tasag}>
-                    {a?.tovchlol}
-                  </Select.Option>
-                ))}
-              </Select>
-            </div>
 
             <div className="lg:min-w-fit lg:w-auto">
               <Select

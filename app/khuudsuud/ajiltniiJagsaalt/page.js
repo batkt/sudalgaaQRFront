@@ -1345,7 +1345,7 @@ export default function ajiltniiJagsaalt() {
                 </div>
                 <div className="flex items-center justify-center p-6 border">
                   <QRCode
-                    value={`https://sudalgaa.zevtabs.mn/anket/${negAjiltan._id}/anket`}
+                    value={`https://qr.zevtabs.mn/anket/${negAjiltan._id}/anket`}
                     renderAs="svg"
                     level="H"
                     size={150}
@@ -1381,12 +1381,12 @@ export default function ajiltniiJagsaalt() {
               <div className="flex items-center justify-center gap-8">
                 <div className="flex items-center justify-center p-6 border">
                   <QRCode
-                    value={`https://sudalgaa.zevtabs.mn/anket/${negAjiltan._id}/anket`}
+                    value={`https://qr.zevtabs.mn/anket/${negAjiltan._id}/anket`}
                     renderAs="svg"
                     level="H"
                     size={350}
                     imageSettings={{
-                      src: "/assets/shuukhLogo,webp",
+                      src: "/assets/shuukhLogo.webp",
                       excavate: true,
                       height: 100,
                       width: 100,
@@ -1423,7 +1423,7 @@ export default function ajiltniiJagsaalt() {
                 </div>
                 <div className="flex items-center justify-center p-6 border">
                   <QRCode
-                    value={`https://sudalgaa.zevtabs.mn/anket/${negAjiltan._id}/anket`}
+                    value={`https://qr.zevtabs.mn/anket/${negAjiltan._id}/anket`}
                     renderAs="svg"
                     level="H"
                     size={150}

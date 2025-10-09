@@ -247,7 +247,6 @@ const Analytic = () => {
             <AnalyticsFilters
               ognoo={analyticsData.ognoo}
               onChangeOgnoo={analyticsData.onChangeOgnoo}
-              tasagGaralt={analyticsData.tasagGaralt}
               zardalGaralt={analyticsData.zardalGaralt}
               selectedZardal={modals.selectedZardal}
               setSelectedZardal={modals.setSelectedZardal}

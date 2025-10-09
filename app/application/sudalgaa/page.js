@@ -29,6 +29,12 @@ const sudalgaa = () => {
   const { confirm } = Modal;
 
   function asuultIdevkhteiBolgokh(id) {
+    // Check if id is valid before proceeding
+    if (!id) {
+      console.warn("Invalid survey ID provided to asuultIdevkhteiBolgokh");
+      return;
+    }
+    
     if (songogdsonSudalgaa === id)
       return message.warning("Сонгогдсон судалгаа байна");
     uilchilgee()
@@ -81,7 +87,11 @@ const sudalgaa = () => {
         setSongogdsonSudalgaa(res.data);
         if (!res.data) {
           message.warning("Сонгогдсон судалгаа байхгүй байна!");
-          asuultIdevkhteiBolgokh(sudalgaaJagsaalt?.jagsaalt?.[0]?._id);
+          // Only call asuultIdevkhteiBolgokh if we have a valid survey ID
+          const firstSurveyId = sudalgaaJagsaalt?.jagsaalt?.[0]?._id;
+          if (firstSurveyId) {
+            asuultIdevkhteiBolgokh(firstSurveyId);
+          }
         }
       });
   }, [sudalgaaJagsaalt]);

@@ -352,6 +352,15 @@
   display: block;
 }
 
+/* Mobile Login Card - Force White Background */
+.mobile-login-card {
+  background-color: white !important;
+  background: white !important;
+  opacity: 1 !important;
+  position: relative !important;
+  z-index: 20 !important;
+}
+
 .question-item {
   margin-bottom: 10px;
   display: flex;

@@ -363,7 +363,7 @@ export default function burtgekh() {
           <div className="mt-6 md:absolute md:right-[5%] md:top-1/2 md:transform md:-translate-y-1/2">
             <QRCode
               // value={`http://feedback.transportation.police.gov.mn/anket/${qrData._id}`}
-              value={`http://sudalgaa.zevtabs.mn/anket/${qrData._id}`}
+              value={`http://qr.zevtabs.mn/anket/${qrData._id}`}
               renderAs="svg"
               level="H"
               size={200}

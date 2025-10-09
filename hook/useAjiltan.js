@@ -21,7 +21,7 @@ export function useAjiltniiJagsaalt(token) {
   const { data, mutate } = useSWR(
     // !!token ? ["http://192.168.1.241:8085/ajiltan", khuudaslalt] : null,
     // !!token ? ["http://103.143.40.41:8085/ajiltan", khuudaslalt] : null,
-    !!token ? ["https://sudalgaa.zevtabs.mn/api/ajiltan", khuudaslalt] : null,
+    !!token ? ["https://qr.zevtabs.mn/api/ajiltan", khuudaslalt] : null,
     // !!token ? ["http://feedback.transportation.police.gov.mn:8083/ajiltan", khuudaslalt] : null,
     fetcherJagsaalt,
     { revalidateOnFocus: false }
