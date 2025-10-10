@@ -53,12 +53,7 @@ const order = { createdAt: -1 };
 const searchKeys = [
   "ovog",
   "ner",
-  "tsol",
-  "tasag",
   "register",
-  "kheltes",
-  "duureg",
-  "albanTushaal",
   "utas",
   "asuult",
 ];
@@ -234,9 +229,11 @@ const EmployeeCard = ({
             <div className="font-medium text-gray-900">
               {record.ovog} {record.ner}
             </div>
-            <div className="text-sm text-gray-600">{record.tsol}</div>
-            <div className="text-xs text-gray-500">
-              {record.tasag} {record.kheltes && `- ${record.kheltes}`}
+            <div className="text-sm text-gray-600">
+              {record.departmentAssignments && record.departmentAssignments.length > 0 
+                ? record.departmentAssignments[record.departmentAssignments.length - 1].departmentName
+                : 'Department not assigned'
+              }
             </div>
           </div>
         </div>
@@ -403,11 +400,6 @@ export default function ajiltniiJagsaalt() {
   const [selectedRecords, setSelectedRecords] = useState([]);
   const [filters, setFilters] = useState({
     ner: null,
-    albanTushaal: null,
-    duureg: null,
-    tsol: null,
-    tasag: null,
-    kheltes: null,
     buleg: null,
   });
 
@@ -426,21 +418,6 @@ export default function ajiltniiJagsaalt() {
 
     if (filters.ner) {
       baseQuery.ner = { $regex: filters.ner, $options: "i" };
-    }
-    if (filters.albanTushaal) {
-      baseQuery.albanTushaal = { $regex: filters.albanTushaal, $options: "i" };
-    }
-    if (filters.duureg) {
-      baseQuery.duureg = { $regex: filters.duureg, $options: "i" };
-    }
-    if (filters.tsol) {
-      baseQuery.tsol = { $regex: filters.tsol, $options: "i" };
-    }
-    if (filters.tasag) {
-      baseQuery.tasag = { $regex: filters.tasag, $options: "i" };
-    }
-    if (filters.kheltes) {
-      baseQuery.kheltes = { $regex: filters.kheltes, $options: "i" };
     }
     if (filters.buleg) {
       // Filter by department assignments - employees have departmentAssignments array
@@ -571,46 +548,6 @@ export default function ajiltniiJagsaalt() {
             .map((name) => name.trim())
         ),
       ].sort(),
-      albanTushaal: [
-        ...new Set(
-          data
-            .map((item) => item.albanTushaal)
-            .filter(Boolean)
-            .map((tushaal) => tushaal.trim())
-        ),
-      ].sort(),
-      duureg: [
-        ...new Set(
-          data
-            .map((item) => item.duureg)
-            .filter(Boolean)
-            .map((duureg) => duureg.trim())
-        ),
-      ].sort(),
-      tsol: [
-        ...new Set(
-          data
-            .map((item) => item.tsol)
-            .filter(Boolean)
-            .map((tsol) => tsol.trim())
-        ),
-      ].sort(),
-      tasag: [
-        ...new Set(
-          data
-            .map((item) => item.tasag)
-            .filter(Boolean)
-            .map((tasag) => tasag.trim())
-        ),
-      ].sort(),
-      kheltes: [
-        ...new Set(
-          data
-            .map((item) => item.kheltes)
-            .filter(Boolean)
-            .map((kheltes) => kheltes.trim())
-        ),
-      ].sort(),
       buleg:
         bulegGaralt?.jagsaalt?.map((buleg) => ({
           value: buleg._id,
@@ -625,6 +562,15 @@ export default function ajiltniiJagsaalt() {
       const levels = getDepartmentsByLevel(selectedBuleg.dedKhesguud);
       setDepartmentLevels(levels);
       setSelectedDepartments({});
+      
+      // Automatically select the first level (the selected department itself)
+      if (selectedBuleg.ner) {
+        setSelectedDepartments({ 0: selectedBuleg.ner });
+        setFilters((prev) => ({
+          ...prev,
+          buleg: selectedBuleg.ner,
+        }));
+      }
     } else {
       setDepartmentLevels({});
       setSelectedDepartments({});
@@ -772,41 +718,58 @@ export default function ajiltniiJagsaalt() {
       },
     ];
 
-    // Add separate department columns when filtering by department
+    // Add department columns when filtering by department
     if (filters.buleg) {
-      // Get all unique department levels from the data
       const allEmployees = ajiltanGaralt?.data?.jagsaalt || [];
-      const maxDepartmentLevel = Math.max(
-        ...allEmployees
-          .map(emp => emp.departmentAssignments || [])
-          .flat()
-          .map(dept => dept.level || 0),
-        -1
-      );
-
-      // Create separate columns for each department level
-      for (let level = 0; level <= maxDepartmentLevel; level++) {
-        data.push({
-          title: <div className="text-center">{`${level + 1}-р түвшин`}</div>,
-          key: `department_${level}`,
-          dataIndex: "departmentAssignments",
-          ellipsis: true,
-          width: "6rem",
-          render: (departmentAssignments) => {
-            if (!departmentAssignments || departmentAssignments.length === 0) {
-              return <span className="text-gray-400">-</span>;
+      
+      // Find the level of the selected department
+      let selectedDepartmentLevel = null;
+      for (const emp of allEmployees) {
+        if (emp.departmentAssignments) {
+          for (const dept of emp.departmentAssignments) {
+            if (dept.departmentName === filters.buleg) {
+              selectedDepartmentLevel = dept.level;
+              break;
             }
+          }
+          if (selectedDepartmentLevel !== null) break;
+        }
+      }
 
-            // Find department assignment for this level
-            const deptForLevel = departmentAssignments.find(dept => dept.level === level);
-            
-            if (!deptForLevel) {
-              return <span className="text-gray-400">-</span>;
+      // Create department name mapping by collecting unique department names per level
+      const levelToDepartmentName = {};
+      for (const emp of allEmployees) {
+        if (emp.departmentAssignments) {
+          for (const dept of emp.departmentAssignments) {
+            if (dept.level !== undefined && !levelToDepartmentName[dept.level]) {
+              levelToDepartmentName[dept.level] = dept.departmentName;
             }
+          }
+        }
+      }
 
-            return <div className="text-xs">{deptForLevel.departmentName}</div>;
-          },
-        });
+      // Show columns from level 0 up to the selected department level
+      const maxLevel = selectedDepartmentLevel !== null ? selectedDepartmentLevel : 6;
+      for (let level = 0; level <= maxLevel; level++) {
+        if (levelToDepartmentName[level]) {
+          data.push({
+            title: <div className="text-center">{levelToDepartmentName[level] || `${level + 1}-р түвшин`}</div>,
+            key: `department_${level}`,
+            dataIndex: "departmentAssignments",
+            ellipsis: true,
+            width: "6rem",
+            render: (departmentAssignments) => {
+              if (!departmentAssignments) return <span className="text-gray-400">-</span>;
+              
+              const deptForLevel = departmentAssignments.find(dept => dept.level === level);
+              return deptForLevel ? (
+                <div className="text-xs">{deptForLevel.departmentValue || deptForLevel.departmentName}</div>
+              ) : (
+                <span className="text-gray-400">-</span>
+              );
+            },
+          });
+        }
       }
     }
     var tasalsanBagana = [
@@ -1106,18 +1069,15 @@ export default function ajiltniiJagsaalt() {
                 );
                 setSelectedBuleg(selected);
 
-                // Also filter employees by the selected parent department
-                if (selected) {
-                  setFilters((prev) => ({
-                    ...prev,
-                    buleg: selected.ner,
-                  }));
-                } else {
-                  setFilters((prev) => ({
-                    ...prev,
-                    buleg: null,
-                  }));
-                }
+                // Clear hierarchical selections when using main dropdown
+                setSelectedDepartments({});
+
+                // Don't set filters.buleg when using main dropdown
+                // Let the hierarchical selection handle the filtering
+                setFilters((prev) => ({
+                  ...prev,
+                  buleg: null,
+                }));
               }}
               onClear={() => {
                 setSelectedBuleg(null);
@@ -1198,11 +1158,6 @@ export default function ajiltniiJagsaalt() {
             onClick={() => {
               setFilters({
                 ner: null,
-                albanTushaal: null,
-                duureg: null,
-                tsol: null,
-                tasag: null,
-                kheltes: null,
                 buleg: null,
               });
               setSelectedBuleg(null);
