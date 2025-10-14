@@ -50,13 +50,7 @@ import BaganiinSongolt from "@/components/table/BaganiinSongolt";
 import moment from "moment";
 
 const order = { createdAt: -1 };
-const searchKeys = [
-  "ovog",
-  "ner",
-  "register",
-  "utas",
-  "asuult",
-];
+const searchKeys = ["ovog", "ner", "register", "utas", "asuult"];
 
 const UploadKharya = ({ zurgiinId, data, token, ajiltanGaralt }) => {
   const zuragRef = useRef(null);
@@ -230,10 +224,12 @@ const EmployeeCard = ({
               {record.ovog} {record.ner}
             </div>
             <div className="text-sm text-gray-600">
-              {record.departmentAssignments && record.departmentAssignments.length > 0 
-                ? record.departmentAssignments[record.departmentAssignments.length - 1].departmentName
-                : 'Department not assigned'
-              }
+              {record.departmentAssignments &&
+              record.departmentAssignments.length > 0
+                ? record.departmentAssignments[
+                    record.departmentAssignments.length - 1
+                  ].departmentName
+                : "Department not assigned"}
             </div>
           </div>
         </div>
@@ -396,6 +392,16 @@ export default function ajiltniiJagsaalt() {
   const [asuultData, setAsuultData] = useState("");
   const [shineBagana, setShineBagana] = useState([]);
   const [isMobile, setIsMobile] = useState(false);
+
+  const getDepartmentValue = (departmentName) => {
+    if (!negAjiltan?.departmentAssignments) return "";
+
+    const department = negAjiltan.departmentAssignments.find(
+      (dept) => dept.departmentName === departmentName
+    );
+
+    return department ? department.departmentValue : "";
+  };
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
   const [selectedRecords, setSelectedRecords] = useState([]);
   const [filters, setFilters] = useState({
@@ -435,7 +441,6 @@ export default function ajiltniiJagsaalt() {
     searchKeys,
     100
   );
-
 
   const bulegGaralt = useBuleg(
     token,
@@ -562,7 +567,7 @@ export default function ajiltniiJagsaalt() {
       const levels = getDepartmentsByLevel(selectedBuleg.dedKhesguud);
       setDepartmentLevels(levels);
       setSelectedDepartments({});
-      
+
       // Automatically select the first level (the selected department itself)
       if (selectedBuleg.ner) {
         setSelectedDepartments({ 0: selectedBuleg.ner });
@@ -721,7 +726,7 @@ export default function ajiltniiJagsaalt() {
     // Add department columns when filtering by department
     if (filters.buleg) {
       const allEmployees = ajiltanGaralt?.data?.jagsaalt || [];
-      
+
       // Find the level of the selected department
       let selectedDepartmentLevel = null;
       for (const emp of allEmployees) {
@@ -741,7 +746,10 @@ export default function ajiltniiJagsaalt() {
       for (const emp of allEmployees) {
         if (emp.departmentAssignments) {
           for (const dept of emp.departmentAssignments) {
-            if (dept.level !== undefined && !levelToDepartmentName[dept.level]) {
+            if (
+              dept.level !== undefined &&
+              !levelToDepartmentName[dept.level]
+            ) {
               levelToDepartmentName[dept.level] = dept.departmentName;
             }
           }
@@ -749,21 +757,31 @@ export default function ajiltniiJagsaalt() {
       }
 
       // Show columns from level 0 up to the selected department level
-      const maxLevel = selectedDepartmentLevel !== null ? selectedDepartmentLevel : 6;
+      const maxLevel =
+        selectedDepartmentLevel !== null ? selectedDepartmentLevel : 6;
       for (let level = 0; level <= maxLevel; level++) {
         if (levelToDepartmentName[level]) {
           data.push({
-            title: <div className="text-center">{levelToDepartmentName[level] || `${level + 1}-р түвшин`}</div>,
+            title: (
+              <div className="text-center">
+                {levelToDepartmentName[level] || `${level + 1}-р түвшин`}
+              </div>
+            ),
             key: `department_${level}`,
             dataIndex: "departmentAssignments",
             ellipsis: true,
             width: "6rem",
             render: (departmentAssignments) => {
-              if (!departmentAssignments) return <span className="text-gray-400">-</span>;
-              
-              const deptForLevel = departmentAssignments.find(dept => dept.level === level);
+              if (!departmentAssignments)
+                return <span className="text-gray-400">-</span>;
+
+              const deptForLevel = departmentAssignments.find(
+                (dept) => dept.level === level
+              );
               return deptForLevel ? (
-                <div className="text-xs">{deptForLevel.departmentValue || deptForLevel.departmentName}</div>
+                <div className="text-xs">
+                  {deptForLevel.departmentValue || deptForLevel.departmentName}
+                </div>
               ) : (
                 <span className="text-gray-400">-</span>
               );
@@ -1426,11 +1444,10 @@ export default function ajiltniiJagsaalt() {
             <div className="flex flex-col items-center justify-center w-full gap-4 h-1/2 print:mt-12">
               <p className="uppercase font-[600]">тангараг</p>
               <p className="space-y-2 text-justify">
-                Монгол Улсын иргэн би цагдаагийн албанд ажиллахдаа Монгол Улсын
-                Үндсэн хууль, бусад хууль, алба хаагчийн ёс зүй, сахилга, нууцыг
-                чанд сахин, чин шударгаар ажиллаж, шаардлага гарвал амь биеэ үл
-                хайрлан зүтгэхээ батлан тангараглая. Би энэ тангаргаасаа няцваас
-                хуулийн хариуцлага хүлээнэ.
+                Эх орон, ард түмнийхээ төлөө эрдэм чадлаа зориулж, төрийн хууль,
+                ёс зүйн хэм хэмжээг чанд сахиж, албан үүргээ үнэнч шударгаар
+                биелүүлэхээ тангараглая. Тангаргаа няцвал хуулийн хариуцлага
+                хүлээнэ.
               </p>
             </div>
             <div className="flex flex-col items-center justify-center gap-4 h-1/2 print:mt-32">
@@ -1459,13 +1476,19 @@ export default function ajiltniiJagsaalt() {
               <div className="flex w-full">
                 <div className="flex flex-col items-start justify-center w-1/4 gap-2">
                   <span>Нэр :</span>
-                  <span>Тасаг :</span>
+                  <span>Хэлтэс :</span>
+                  <span>Албан тушаал :</span>
+                  <span>Цол :</span>
                 </div>
                 <div className="flex flex-col items-start justify-center w-3/4 gap-2">
                   <span>
                     {negAjiltan?.ovog?.[0]}.{negAjiltan?.ner}
                   </span>
-                  <span>{negAjiltan?.tasag}</span>
+                  <span>
+                    {getDepartmentValue("Хэлтэс") || negAjiltan?.tasag}
+                  </span>
+                  <span>{getDepartmentValue("Албан тушаал")}</span>
+                  <span>{getDepartmentValue("Цол")}</span>
                 </div>
               </div>
             </div>
@@ -1504,11 +1527,11 @@ export default function ajiltniiJagsaalt() {
                 ТА ДООРХ QR-ЫГ УНШУУЛЖ, САНАЛАА ӨГНӨ ҮҮ.
               </h1>
               <h1 className="flex items-center justify-center text-justify">
-                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Тээврийн цагдаагийн албанаас
-                алба хаагч бүрийн харилцаа, хандлага, байгууллагын үйл
-                ажиллагааг сайжруулах зорилгоор Танд үйлчилж байгаа алба
-                хаагчийн харилцаа, хандлага, ёс зүй, ур чадварын үнэлгээг үнэлж
-                байна.
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Шүүхийн шийдвэр гүйцэтгэх
+                ерөнхий газраас алба хаагч бүрийн харилцаа, хандлага,
+                байгууллагын үйл ажиллагааг сайжруулах зорилгоор Танд үйлчилж
+                байгаа алба хаагчийн харилцаа, хандлага, ёс зүй, ур чадварын
+                үнэлгээг үнэлж байна.
               </h1>
             </div>
             <div className="flex flex-col items-center justify-center gap-4">
@@ -1539,15 +1562,17 @@ export default function ajiltniiJagsaalt() {
                   <span>Овог :</span>
                   <span>Нэр :</span>
                   <span>Цол :</span>
-                  <span>Тасаг :</span>
                   <span>Хэлтэс :</span>
+                  <span>Албан тушаал :</span>
                 </div>
                 <div className="flex flex-col items-start justify-center w-3/4 gap-2">
                   <span>{negAjiltan?.ovog}</span>
                   <span>{negAjiltan?.ner}</span>
-                  <span>{negAjiltan?.tsol}</span>
-                  <span>{negAjiltan?.tasag}</span>
-                  <span>{negAjiltan?.kheltes}</span>
+                  <span>{getDepartmentValue("Цол") || negAjiltan?.tsol}</span>
+                  <span>{getDepartmentValue("Албан тушаал")}</span>
+                  <span>
+                    {getDepartmentValue("Хэлтэс") || negAjiltan?.tasag}
+                  </span>
                 </div>
               </div>
             </div>

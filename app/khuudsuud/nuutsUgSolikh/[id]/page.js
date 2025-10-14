@@ -46,7 +46,7 @@ function Nevtrekh() {
                     src="/assets/logo.webp"
                   />
                 </div>
-                <h2 className="uppercase font-[750] ">тангарга</h2>
+                <h2 className="uppercase font-[750] ">тангараг</h2>
               </div>
               <Form
                 form={form}
