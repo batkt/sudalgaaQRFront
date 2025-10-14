@@ -1473,23 +1473,24 @@ export default function ajiltniiJagsaalt() {
                   />
                 </div>
               </div>
-              <div className="flex w-full">
-                <div className="flex flex-col items-start justify-center w-1/4 gap-2">
-                  <span>Нэр :</span>
-                  <span>Хэлтэс :</span>
-                  <span>Албан тушаал :</span>
-                  <span>Цол :</span>
-                </div>
-                <div className="flex flex-col items-start justify-center w-3/4 gap-2">
-                  <span>
-                    {negAjiltan?.ovog?.[0]}.{negAjiltan?.ner}
-                  </span>
-                  <span>
-                    {getDepartmentValue("Хэлтэс") || negAjiltan?.tasag}
-                  </span>
-                  <span>{getDepartmentValue("Албан тушаал")}</span>
-                  <span>{getDepartmentValue("Цол")}</span>
-                </div>
+              <div className="grid w-full grid-cols-4 gap-y-2">
+                <span className="font-medium">Нэр :</span>
+                <span className="col-span-3">
+                  {negAjiltan?.ovog?.[0]}.{negAjiltan?.ner}
+                </span>
+
+                <span className="font-medium">Хэлтэс :</span>
+                <span className="col-span-3">
+                  {getDepartmentValue("Хэлтэс") || negAjiltan?.tasag}
+                </span>
+
+                <span className="font-medium">Албан тушаал :</span>
+                <span className="col-span-3">
+                  {getDepartmentValue("Албан тушаал")}
+                </span>
+
+                <span className="font-medium">Цол :</span>
+                <span className="col-span-3">{getDepartmentValue("Цол")}</span>
               </div>
             </div>
           </div>
@@ -1557,21 +1558,35 @@ export default function ajiltniiJagsaalt() {
                   />
                 </div>
               </div>
-              <div className="flex w-full">
-                <div className="flex flex-col items-start justify-center w-1/4 gap-2">
-                  <span>Овог :</span>
-                  <span>Нэр :</span>
-                  <span>Цол :</span>
-                  <span>Хэлтэс :</span>
-                  <span>Албан тушаал :</span>
+              <div className="flex flex-col w-full gap-2">
+                <div className="flex w-full">
+                  <span className="w-1/4 font-medium">Овог :</span>
+                  <span className="w-3/4">{negAjiltan?.ovog}</span>
                 </div>
-                <div className="flex flex-col items-start justify-center w-3/4 gap-2">
-                  <span>{negAjiltan?.ovog}</span>
-                  <span>{negAjiltan?.ner}</span>
-                  <span>{getDepartmentValue("Цол") || negAjiltan?.tsol}</span>
-                  <span>{getDepartmentValue("Албан тушаал")}</span>
-                  <span>
+
+                <div className="flex w-full">
+                  <span className="w-1/4 font-medium">Нэр :</span>
+                  <span className="w-3/4">{negAjiltan?.ner}</span>
+                </div>
+
+                <div className="flex w-full">
+                  <span className="w-1/4 font-medium">Цол :</span>
+                  <span className="w-3/4">
+                    {getDepartmentValue("Цол") || negAjiltan?.tsol}
+                  </span>
+                </div>
+
+                <div className="flex w-full">
+                  <span className="w-1/4 font-medium">Хэлтэс :</span>
+                  <span className="w-3/4">
                     {getDepartmentValue("Хэлтэс") || negAjiltan?.tasag}
+                  </span>
+                </div>
+
+                <div className="flex w-full">
+                  <span className="w-1/4 font-medium">Албан тушаал :</span>
+                  <span className="w-3/4">
+                    {getDepartmentValue("Албан тушаал")}
                   </span>
                 </div>
               </div>
