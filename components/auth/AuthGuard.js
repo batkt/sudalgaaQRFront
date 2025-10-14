@@ -9,6 +9,7 @@ import { Spin, message } from "antd";
 const PUBLIC_PAGES = [
   "/",
   "/setgegdel", // Allow access to setgegdel pages
+  "/anket", // Allow access to anket pages
 ];
 
 // Check if current path is public
@@ -17,6 +18,10 @@ const isPublicPage = (pathname) => {
     if (publicPath === "/setgegdel") {
       // Allow all setgegdel pages (including dynamic routes)
       return pathname.startsWith("/setgegdel");
+    }
+    if (publicPath === "/anket") {
+      // Allow all anket pages (including dynamic routes)
+      return pathname.startsWith("/anket");
     }
     return pathname === publicPath;
   });
