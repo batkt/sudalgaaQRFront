@@ -19,11 +19,14 @@ import {
   PrinterOutlined,
   FileTextOutlined,
   CloseOutlined,
+  DownloadOutlined,
 } from "@ant-design/icons";
 import { useReactToPrint } from "react-to-print";
 import dynamic from "next/dynamic";
 import moment from "moment";
-import { socket } from "@/services/uilchilgee";
+import { socket, url } from "@/services/uilchilgee";
+import downloadFileWithToken from "@/tools/functions/downloadFileWithToken";
+import { message } from "antd";
 
 const GeneratePDF = dynamic(() => import("@/components/modal/PdfTatakh"), {
   ssr: false,
@@ -261,6 +264,146 @@ const Analytic = () => {
     `,
   });
 
+  // Download handler for KhandaltiinYavts (Access Progress)
+  const handleDownloadKhandaltiinYavts = async () => {
+    if (!analyticsData.token) {
+      message.error("Токен байхгүй байна");
+      return;
+    }
+
+    try {
+      let fullUrl = `${url}/exportKhandaltiinYavts`;
+      const params = new URLSearchParams();
+
+      // Add date filtering if date range is selected
+      if (analyticsData.ognoo) {
+        let startDate, endDate;
+        
+        // Handle both array and string formats
+        if (Array.isArray(analyticsData.ognoo) && analyticsData.ognoo.length === 2) {
+          startDate = moment(analyticsData.ognoo[0]).format("YYYY-MM-DD");
+          endDate = moment(analyticsData.ognoo[1]).format("YYYY-MM-DD");
+        } else if (typeof analyticsData.ognoo === 'string') {
+          // If it's a string, try to parse it (format: "YYYY-MM-DD,YYYY-MM-DD" or similar)
+          const dateParts = analyticsData.ognoo.split(',');
+          if (dateParts.length === 2) {
+            startDate = moment(dateParts[0].trim()).format("YYYY-MM-DD");
+            endDate = moment(dateParts[1].trim()).format("YYYY-MM-DD");
+          }
+        }
+        
+        if (startDate && endDate) {
+          params.append("ekhlekhOgnoo", startDate);
+          params.append("duusakhOgnoo", endDate);
+        }
+      }
+
+      if (params.toString()) {
+        fullUrl += `?${params.toString()}`;
+      }
+
+      const fileName = "khandaltiin_yavts.xlsx";
+      await downloadFileWithToken(fullUrl, analyticsData.token, fileName);
+      message.success("Файл амжилттай татлаа");
+    } catch (error) {
+      message.error("Файл татахад алдаа гарлаа");
+      console.error("Download error:", error);
+    }
+  };
+
+  // Download handler for OnooniiToogoor (By Rating)
+  const handleDownloadOnooniiToogoor = async () => {
+    if (!analyticsData.token) {
+      message.error("Токен байхгүй байна");
+      return;
+    }
+
+    try {
+      let fullUrl = `${url}/exportOnooniiToogoor`;
+      const params = new URLSearchParams();
+
+      // Add date filtering if date range is selected
+      if (analyticsData.ognoo) {
+        let startDate, endDate;
+        
+        // Handle both array and string formats
+        if (Array.isArray(analyticsData.ognoo) && analyticsData.ognoo.length === 2) {
+          startDate = moment(analyticsData.ognoo[0]).format("YYYY-MM-DD");
+          endDate = moment(analyticsData.ognoo[1]).format("YYYY-MM-DD");
+        } else if (typeof analyticsData.ognoo === 'string') {
+          // If it's a string, try to parse it (format: "YYYY-MM-DD,YYYY-MM-DD" or similar)
+          const dateParts = analyticsData.ognoo.split(',');
+          if (dateParts.length === 2) {
+            startDate = moment(dateParts[0].trim()).format("YYYY-MM-DD");
+            endDate = moment(dateParts[1].trim()).format("YYYY-MM-DD");
+          }
+        }
+        
+        if (startDate && endDate) {
+          params.append("ekhlekhOgnoo", startDate);
+          params.append("duusakhOgnoo", endDate);
+        }
+      }
+
+      if (params.toString()) {
+        fullUrl += `?${params.toString()}`;
+      }
+
+      const fileName = "oonoonii_toogoor.xlsx";
+      await downloadFileWithToken(fullUrl, analyticsData.token, fileName);
+      message.success("Файл амжилттай татлаа");
+    } catch (error) {
+      message.error("Файл татахад алдаа гарлаа");
+      console.error("Download error:", error);
+    }
+  };
+
+  // Download handler for SanalTailan (Survey Report)
+  const handleDownloadSanalTailan = async () => {
+    if (!analyticsData.token) {
+      message.error("Токен байхгүй байна");
+      return;
+    }
+
+    try {
+      let fullUrl = `${url}/exportSanalTailan`;
+      const params = new URLSearchParams();
+
+      // Add date filtering if date range is selected
+      if (analyticsData.ognoo) {
+        let startDate, endDate;
+        
+        // Handle both array and string formats
+        if (Array.isArray(analyticsData.ognoo) && analyticsData.ognoo.length === 2) {
+          startDate = moment(analyticsData.ognoo[0]).format("YYYY-MM-DD");
+          endDate = moment(analyticsData.ognoo[1]).format("YYYY-MM-DD");
+        } else if (typeof analyticsData.ognoo === 'string') {
+          // If it's a string, try to parse it (format: "YYYY-MM-DD,YYYY-MM-DD" or similar)
+          const dateParts = analyticsData.ognoo.split(',');
+          if (dateParts.length === 2) {
+            startDate = moment(dateParts[0].trim()).format("YYYY-MM-DD");
+            endDate = moment(dateParts[1].trim()).format("YYYY-MM-DD");
+          }
+        }
+        
+        if (startDate && endDate) {
+          params.append("ekhlekhOgnoo", startDate);
+          params.append("duusakhOgnoo", endDate);
+        }
+      }
+
+      if (params.toString()) {
+        fullUrl += `?${params.toString()}`;
+      }
+
+      const fileName = "sanal_tailan.xlsx";
+      await downloadFileWithToken(fullUrl, analyticsData.token, fileName);
+      message.success("Файл амжилттай татлаа");
+    } catch (error) {
+      message.error("Файл татахад алдаа гарлаа");
+      console.error("Download error:", error);
+    }
+  };
 
   const showEmployeeDialogWithData = useCallback(
     (type) => {
@@ -343,6 +486,14 @@ const Analytic = () => {
                 <FilePdfOutlined />
                 <span className="hidden sm:inline">PDF</span>
               </Button>
+              <Button
+                onClick={handleDownloadSanalTailan}
+                className="flex items-center justify-center gap-2 text-xs bg-white lg:text-sm"
+                size="small"
+                icon={<DownloadOutlined />}
+              >
+                <span className="hidden sm:inline">Санал тайлан</span>
+              </Button>
               <GeneratePDF
                 title="PDF харах"
                 open={modals.isModalOpen}
@@ -383,6 +534,8 @@ const Analytic = () => {
                 selectedOption={analyticsData.selectedOption}
                 rawSurveyData={processing.getFilteredDataByMainDateRange(filteredAnalyticsData.khariultGaralt?.jagsaalt || [])}
                 dateRange={analyticsData.dateRange}
+                onDownloadKhandaltiinYavts={handleDownloadKhandaltiinYavts}
+                onDownloadOnooniiToogoor={handleDownloadOnooniiToogoor}
               />
 
               <EmployeeCards
@@ -423,6 +576,8 @@ const Analytic = () => {
         getFilteredDataByMainDateRange={
           processing.getFilteredDataByMainDateRange
         }
+        token={analyticsData.token}
+        dialogType={modals.dialogType}
       />
 
       <AttentionModal
@@ -433,6 +588,7 @@ const Analytic = () => {
           processing.getFilteredDataByMainDateRange
         }
         renderHighlighted={processing.renderHighlighted}
+        token={analyticsData.token}
       />
     </Nav>
   );

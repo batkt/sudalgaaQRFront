@@ -1,7 +1,10 @@
 "use client";
 
 import { memo, useState, useEffect } from "react";
-import { Modal, Table } from "antd";
+import { Modal, Table, Button, message } from "antd";
+import { DownloadOutlined } from "@ant-design/icons";
+import downloadFileWithToken from "@/tools/functions/downloadFileWithToken";
+import { url } from "@/services/uilchilgee";
 
 const EmployeeModal = memo(
   ({
@@ -10,6 +13,8 @@ const EmployeeModal = memo(
     dialogTitle,
     selectedEmployeeData,
     getFilteredDataByMainDateRange,
+    token,
+    dialogType,
   }) => {
     const [currentPage, setCurrentPage] = useState(1);
 
@@ -18,6 +23,30 @@ const EmployeeModal = memo(
         setCurrentPage(1);
       }
     }, [employeeDialogOpen]);
+
+    const handleDownload = async () => {
+      if (!token) {
+        message.error("Токен байхгүй байна");
+        return;
+      }
+      
+      try {
+        const endpoint = dialogType === "least" 
+          ? "/exportBagaSanalAjiltan"
+          : "/exportIkhSanalAjiltan";
+        
+        const fullUrl = `${url}${endpoint}`;
+        const fileName = dialogType === "least"
+          ? "baga_sanal_ajiltan.xlsx"
+          : "ikh_sanal_ajiltan.xlsx";
+        
+        await downloadFileWithToken(fullUrl, token, fileName);
+        message.success("Файл амжилттай татлаа");
+      } catch (error) {
+        message.error("Файл татахад алдаа гарлаа");
+        console.error("Download error:", error);
+      }
+    };
     return (
       <Modal
         title={
@@ -26,12 +55,23 @@ const EmployeeModal = memo(
               {dialogTitle} (
               {getFilteredDataByMainDateRange(selectedEmployeeData).length})
             </span>
-            <button
-              onClick={handleEmployeeDialogCancel}
-              className="flex items-center justify-center w-8 h-8 text-gray-500 hover:text-gray-700 text-xl font-bold"
-            >
-              ×
-            </button>
+            <div className="flex items-center gap-2">
+              <Button
+                type="primary"
+                icon={<DownloadOutlined />}
+                onClick={handleDownload}
+                size="small"
+                className="bg-blue-600 hover:bg-blue-700 text-white border-none"
+              >
+                Excel татах
+              </Button>
+              <button
+                onClick={handleEmployeeDialogCancel}
+                className="flex items-center justify-center w-8 h-8 text-gray-500 hover:text-gray-700 text-xl font-bold"
+              >
+                ×
+              </button>
+            </div>
           </div>
         }
         open={employeeDialogOpen}

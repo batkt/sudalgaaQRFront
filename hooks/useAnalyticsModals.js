@@ -9,6 +9,7 @@ export const useAnalyticsModals = () => {
   const [employeeDialogOpen, setEmployeeDialogOpen] = useState(false);
   const [selectedEmployeeData, setSelectedEmployeeData] = useState([]);
   const [dialogTitle, setDialogTitle] = useState("");
+  const [dialogType, setDialogType] = useState(null);
   const [attentionModalOpen, setAttentionModalOpen] = useState(false);
   const [attentionComments, setAttentionComments] = useState([]);
   const [commentFilter, setCommentFilter] = useState("all");
@@ -26,6 +27,7 @@ export const useAnalyticsModals = () => {
   };
 
   const showEmployeeDialog = (type, apiChartData) => {
+    setDialogType(type);
     if (type === "least") {
       setSelectedEmployeeData(apiChartData.ajiltanSanal || []);
       setDialogTitle("Бага саналтай албан хаагчид");
@@ -44,6 +46,7 @@ export const useAnalyticsModals = () => {
     setEmployeeDialogOpen(false);
     setSelectedEmployeeData([]);
     setDialogTitle("");
+    setDialogType(null);
   };
 
   const handleAttentionModalCancel = () => {
@@ -67,6 +70,7 @@ export const useAnalyticsModals = () => {
     employeeDialogOpen,
     selectedEmployeeData,
     dialogTitle,
+    dialogType,
     attentionModalOpen,
     attentionComments,
     setAttentionComments,

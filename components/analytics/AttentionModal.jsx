@@ -1,8 +1,11 @@
 "use client";
 
 import { memo, useState, useEffect } from "react";
-import { Modal, Table } from "antd";
+import { Modal, Table, Button, message } from "antd";
+import { DownloadOutlined } from "@ant-design/icons";
 import moment from "moment";
+import downloadFileWithToken from "@/tools/functions/downloadFileWithToken";
+import { url } from "@/services/uilchilgee";
 
 const AttentionModal = memo(
   ({
@@ -11,6 +14,7 @@ const AttentionModal = memo(
     attentionComments,
     getFilteredDataByMainDateRange,
     renderHighlighted,
+    token,
   }) => {
     const [currentPage, setCurrentPage] = useState(1);
 
@@ -19,6 +23,24 @@ const AttentionModal = memo(
         setCurrentPage(1);
       }
     }, [attentionModalOpen]);
+
+    const handleDownload = async () => {
+      if (!token) {
+        message.error("Токен байхгүй байна");
+        return;
+      }
+      
+      try {
+        const fullUrl = `${url}/exportAnkhaarakhSetgegdel`;
+        const fileName = "ankhaarakh_setgegdel.xlsx";
+        
+        await downloadFileWithToken(fullUrl, token, fileName);
+        message.success("Файл амжилттай татлаа");
+      } catch (error) {
+        message.error("Файл татахад алдаа гарлаа");
+        console.error("Download error:", error);
+      }
+    };
     return (
       <Modal
         title={
@@ -26,12 +48,23 @@ const AttentionModal = memo(
             <span className="text-lg font-semibold text-gray-800">
               Анхаарах шаардлагатай сэтгэгдлүүд
             </span>
-            <button
-              onClick={handleAttentionModalCancel}
-              className="flex items-center justify-center w-8 h-8 text-xl font-bold text-gray-500 hover:text-gray-700"
-            >
-              ×
-            </button>
+            <div className="flex items-center gap-2">
+              <Button
+                type="primary"
+                icon={<DownloadOutlined />}
+                onClick={handleDownload}
+                size="small"
+                className="bg-blue-600 hover:bg-blue-700 text-white border-none"
+              >
+                Excel татах
+              </Button>
+              <button
+                onClick={handleAttentionModalCancel}
+                className="flex items-center justify-center w-8 h-8 text-xl font-bold text-gray-500 hover:text-gray-700"
+              >
+                ×
+              </button>
+            </div>
           </div>
         }
         open={attentionModalOpen}

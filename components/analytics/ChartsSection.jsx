@@ -1,13 +1,23 @@
 "use client";
 
 import { memo } from "react";
+import { Button } from "antd";
+import { DownloadOutlined } from "@ant-design/icons";
 import BarChart from "@/components/charts/BarChart";
 import LineChart from "@/components/charts/LineChart";
 
-const ChartsSection = memo(({ lineGraphicTailan, graphicTailan, selectedOption, rawSurveyData, dateRange }) => {
+const ChartsSection = memo(({ 
+  lineGraphicTailan, 
+  graphicTailan, 
+  selectedOption, 
+  rawSurveyData, 
+  dateRange,
+  onDownloadKhandaltiinYavts,
+  onDownloadOnooniiToogoor
+}) => {
   return (
     <div className="grid grid-cols-1 gap-4 justify-start items-center w-full lg:grid-cols-2 lg:gap-8">
-      <div className="flex flex-col gap-4 justify-center items-center p-4 w-full h-80 bg-white rounded-xl border shadow-lg lg:gap-8">
+      <div className="relative flex flex-col gap-4 justify-center items-center p-4 w-full h-80 bg-white rounded-xl border shadow-lg lg:gap-8">
         <div className="flex justify-between items-center w-full">
           <div>
             <h1 className="text-lg lg:text-xl">Хандалтын явц</h1>
@@ -15,8 +25,19 @@ const ChartsSection = memo(({ lineGraphicTailan, graphicTailan, selectedOption, 
               Иргэн & Огноо
             </h1>
           </div>
+          {onDownloadKhandaltiinYavts && (
+            <Button
+              type="primary"
+              size="small"
+              icon={<DownloadOutlined />}
+              onClick={onDownloadKhandaltiinYavts}
+              className="flex items-center justify-center bg-blue-600 hover:bg-blue-700 text-white border-none"
+            >
+              <span className="hidden sm:inline">Татах</span>
+            </Button>
+          )}
         </div>
-        <div className="flex justify-start items-center w-full h-full">
+        <div className="relative flex justify-start items-center w-full h-full">
           <LineChart
             data={lineGraphicTailan || {}}
             selectedOption={selectedOption}
@@ -24,7 +45,7 @@ const ChartsSection = memo(({ lineGraphicTailan, graphicTailan, selectedOption, 
         </div>
       </div>
 
-      <div className="flex flex-col gap-4 justify-center items-center p-4 w-full h-80 bg-white rounded-xl border shadow-lg lg:gap-8">
+      <div className="relative flex flex-col gap-4 justify-center items-center p-4 w-full h-80 bg-white rounded-xl border shadow-lg lg:gap-8">
         <div className="flex justify-between items-center w-full">
           <div>
             <h1 className="text-lg lg:text-xl">Онооны тоогоор</h1>
@@ -32,8 +53,19 @@ const ChartsSection = memo(({ lineGraphicTailan, graphicTailan, selectedOption, 
               Тоо & Огноо
             </h1>
           </div>
+          {onDownloadOnooniiToogoor && (
+            <Button
+              type="primary"
+              size="small"
+              icon={<DownloadOutlined />}
+              onClick={onDownloadOnooniiToogoor}
+              className="flex items-center justify-center bg-blue-600 hover:bg-blue-700 text-white border-none"
+            >
+              <span className="hidden sm:inline">Татах</span>
+            </Button>
+          )}
         </div>
-        <div className="flex justify-center items-center w-full h-full">
+        <div className="relative flex justify-center items-center w-full h-full">
           <BarChart
             data={graphicTailan || {}}
             selectedOption={selectedOption}
