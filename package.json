@@ -3,10 +3,10 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev --port 3000",
+    "dev": "next dev --port 3001",
     "build": "next build",
-    "start": "next start --port 3000",
-    "pm2": "pm2 start yarn --name \"web\" --interpreter bash -- start --port 3000",
+    "start": "next start --port 3001",
+    "pm2": "pm2 start yarn --name \"web\" --interpreter bash -- start --port 3001",
     "update": "git pull && npm run build && pm2 reload sudalgaa"
   },
   "dependencies": {
